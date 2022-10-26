@@ -13,7 +13,7 @@ namespace TT
         public Transform cameraPivotTransform;
         private Transform myTransform;
         private Vector3 cameraTransformPosition;
-        private LayerMask ignoreLayers;
+        public LayerMask ignoreLayers;
         private Vector3 cameraFollowVelocity = Vector3.zero;
 
         public static CameraHandler singleton;
@@ -43,6 +43,8 @@ namespace TT
             defaultPosition = cameraTransform.localPosition.z;
             //ignore some layers in collision
             ignoreLayers = ~(1 << 8 | 1 << 9 | 1 << 10);
+            //when you start a scene, search for player manager and find player
+            targetTransform = FindObjectOfType<PlayerManager>().transform;
         }
 
         public void FollowTarget(float delta)

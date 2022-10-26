@@ -39,7 +39,7 @@ namespace TT
         [SerializeField]
         float walkingSpeed = 1;
         [SerializeField]
-        float sprintSpeed = 8;
+        float sprintSpeed = 7;
         [SerializeField]
         float rotationSpeed = 10;
         [SerializeField]
@@ -63,6 +63,7 @@ namespace TT
             animatorHandler.Initialize();
 
             playerManager.isGrounded = true;
+            //layers that are ignored for groundchechikng
             ignoreForGroundCheck = ~(1 << 8 | 1 << 11);
 
         }

@@ -11,6 +11,7 @@ namespace TT
         public int maxHealth;
         public int currentHealth;
 
+        public HealthBar healthBar;
 
         Animator animator;
 
@@ -23,7 +24,7 @@ namespace TT
         {
             maxHealth = SetMaxHealthFromHealthLevel();
             currentHealth = maxHealth;
-            
+            healthBar.SetMaxHealth(maxHealth);
 
         }
 
@@ -37,7 +38,7 @@ namespace TT
         {
             currentHealth = currentHealth - damage;
 
-            
+            healthBar.SetCurrentHealth(currentHealth);
             animator.Play("Damage_1");
 
             if (currentHealth <= 0)

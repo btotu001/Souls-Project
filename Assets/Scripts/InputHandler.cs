@@ -15,12 +15,17 @@ namespace TT
 
         //inputs (controller)
         public bool b_Input;
+        public bool a_Input;
         public bool rb_Input;
         public bool rt_Input;
-
+        public bool d_Pad_Up;
+        public bool d_Pad_Down;
+        public bool d_Pad_Left;
+        public bool d_Pad_Right;
 
         public bool rollFlag;
         public bool sprintFlag;
+        public bool comboFlag;
         public float rollInputTimer;
         
 
@@ -28,6 +33,7 @@ namespace TT
         PlayerControls inputActions;
         PlayerAttacker playerAttacker;
         PlayerInventory playerInventory;
+        PlayerManager playerManager;
         
 
         Vector2 movementInput;
@@ -36,8 +42,9 @@ namespace TT
 
         private void Awake()
         {
-            playerAttacker = GetComponentInChildren<PlayerAttacker>();
-            playerInventory = GetComponentInChildren<PlayerInventory>();
+            playerAttacker = GetComponent<PlayerAttacker>();
+            playerInventory = GetComponent<PlayerInventory>();
+            playerManager = GetComponent<PlayerManager>();
         }
 
 
@@ -64,6 +71,8 @@ namespace TT
             MoveInput(delta);
             HandleRollInput(delta);
             HandleAttackInput(delta);
+            HandleQuickSlotInput();
+            HandleInteractButtonInput();
         }
 
         private void MoveInput(float delta)
@@ -106,15 +115,64 @@ namespace TT
             //RB Input handles the Right hand Weapon's light weapon
             if (rb_Input)
             {
-                playerAttacker.HandleLightAttack(playerInventory.rightWeapon);
+                if(playerManager.canDoCombo)
+                {
+                    comboFlag = true;
+                    playerAttacker.HandleWeaponCombo(playerInventory.rightWeapon);
+                    comboFlag = false;
+                }
+                else
+                {
+                    //check to not do animations when interacting or can do combo
+                    if (playerManager.isInteracting)
+                    {
+                        return;
+                    }
+                    if (playerManager.canDoCombo)
+                    {
+                        return;
+                    }
+                 playerAttacker.HandleLightAttack(playerInventory.rightWeapon);
+                }
             }
 
             if (rt_Input)
             {
+                //check to not do animations when interacting or can do combo
+                if (playerManager.isInteracting)
+                {
+                    return;
+                }
+                if (playerManager.canDoCombo)
+                {
+                    return;
+                }
                 playerAttacker.HandleHeavyAttack(playerInventory.rightWeapon);
             }
         }
+
+        private void HandleQuickSlotInput()
+        {
+            inputActions.QuickSlots.DPadRight.performed += i => d_Pad_Right = true;
+            inputActions.QuickSlots.DPadLeft.performed += i => d_Pad_Left = true;
+
+            //when pressing right quickslot, change right hand weapon
+            if (d_Pad_Right)
+            {
+                playerInventory.ChangeRightWeapon();
+            }
+            else if (d_Pad_Left)
+            {
+                playerInventory.ChangeLeftWeapon();
+            }
+
+        }
+
+        private void HandleInteractButtonInput()
+        {
+            inputActions.PlayerActions.A.performed += i => a_Input = true;
+          
+        }
+
     }
-
-
 }
