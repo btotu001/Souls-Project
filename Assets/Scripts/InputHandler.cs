@@ -92,7 +92,7 @@ namespace TT
 
         public void TickInput(float delta)
         {
-            MoveInput(delta);
+            HandleMoveInput(delta);
             HandleRollInput(delta);
             HandleAttackInput(delta);
             HandleQuickSlotInput();
@@ -102,7 +102,7 @@ namespace TT
            
         }
 
-        private void MoveInput(float delta)
+        private void HandleMoveInput(float delta)
         {
             horizontal = movementInput.x;
             vertical = movementInput.y;
@@ -259,6 +259,9 @@ namespace TT
                     cameraHandler.currentLockOnTarget = cameraHandler.rightLockTarget;
                 }
             }
+
+            cameraHandler.SetCameraHeight();
+
         }
 
         

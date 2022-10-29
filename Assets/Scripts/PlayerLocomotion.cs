@@ -7,6 +7,7 @@ namespace TT
 {
     public class PlayerLocomotion : MonoBehaviour
     {
+        CameraHandler cameraHandler;
         PlayerManager playerManager;
         Transform cameraObject;
         InputHandler inputHandler;
@@ -45,8 +46,11 @@ namespace TT
         [SerializeField]
         float fallingSpeed = 40;
 
-       
 
+        private void Awake()
+        {
+            cameraHandler = FindObjectOfType<CameraHandler>();
+        }
 
         void Start()
         {
@@ -77,25 +81,65 @@ namespace TT
 
         private void HandleRotation(float delta)
         {
-            Vector3 targetDir = Vector3.zero;
-            float moveOverride = inputHandler.moveAmount;
+            //if we are locked on
+            if (inputHandler.lockOnFlag)
+            {
+                if(inputHandler.sprintFlag || inputHandler.rollFlag)
+                {
+                    Vector3 targetDirection = Vector3.zero;
+                    targetDirection = cameraHandler.cameraTransform.forward * inputHandler.vertical;
+                    targetDirection += cameraHandler.cameraTransform.right * inputHandler.horizontal;
+                    targetDirection.Normalize();
+                    targetDirection.y = 0;
 
-            targetDir = cameraObject.forward * inputHandler.vertical;
-            targetDir += cameraObject.right * inputHandler.horizontal;
+                    if (targetDirection == Vector3.zero)
+                    {
+                        targetDirection = transform.forward;
+                    }
 
-            targetDir.Normalize();
-            targetDir.y = 0;
+                    //tr = target roattion
+                    Quaternion tr = Quaternion.LookRotation(targetDirection);
+                    Quaternion targetRotation = Quaternion.Slerp(transform.rotation, tr, rotationSpeed * Time.deltaTime);
 
-            if (targetDir == Vector3.zero)
-                targetDir = myTransform.forward;
+                    transform.rotation = targetRotation;
+                }
+                else
+                {
+                    Vector3 rotationDirection = moveDirection;
+                    rotationDirection = cameraHandler.currentLockOnTarget.transform.position - transform.position;
+                    rotationDirection.y = 0;
+                    rotationDirection.Normalize();
+                    Quaternion tr = Quaternion.LookRotation(rotationDirection);
+                    Quaternion targetRotation = Quaternion.Slerp(transform.rotation, tr, rotationSpeed * Time.deltaTime);
+                    transform.rotation = targetRotation;
 
-            float rs = rotationSpeed;
+                }
+              
+            }
+            //if not locked on
+            else
+            {
+                Vector3 targetDir = Vector3.zero;
+                float moveOverride = inputHandler.moveAmount;
 
-            //tr= targetrotation
-            Quaternion tr = Quaternion.LookRotation(targetDir);
-            Quaternion targetRotation = Quaternion.Slerp(myTransform.rotation, tr, rs * delta);
+                targetDir = cameraObject.forward * inputHandler.vertical;
+                targetDir += cameraObject.right * inputHandler.horizontal;
 
-            myTransform.rotation = targetRotation;
+                targetDir.Normalize();
+                targetDir.y = 0;
+
+                if (targetDir == Vector3.zero)
+                    targetDir = myTransform.forward;
+
+                float rs = rotationSpeed;
+
+                //tr= targetrotation
+                Quaternion tr = Quaternion.LookRotation(targetDir);
+                Quaternion targetRotation = Quaternion.Slerp(myTransform.rotation, tr, rs * delta);
+
+                myTransform.rotation = targetRotation;
+            }
+           
 
         }
 
@@ -141,8 +185,16 @@ namespace TT
             Vector3 projectedVelocity = Vector3.ProjectOnPlane(moveDirection, normalVector);
             rigidbody.velocity = projectedVelocity;
 
-            // added isSprinting
-            animatorHandler.UpdateAnimatorValues(inputHandler.moveAmount, 0, playerManager.isSprinting);
+            if (inputHandler.lockOnFlag && inputHandler.sprintFlag == false)
+            {
+                animatorHandler.UpdateAnimatorValues(inputHandler.vertical, inputHandler.horizontal, playerManager.isSprinting);
+            }
+            else
+            {
+           
+                animatorHandler.UpdateAnimatorValues(inputHandler.moveAmount, 0, playerManager.isSprinting);
+
+            }
 
             //animation update
             if (animatorHandler.canRotate)

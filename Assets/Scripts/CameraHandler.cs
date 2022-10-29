@@ -8,6 +8,8 @@ namespace TT
     public class CameraHandler : MonoBehaviour
     {
         InputHandler inputHandler;
+        PlayerManager playerManager;
+
         public Transform targetTransform;
         public Transform cameraTransform;
         //camera rotate
@@ -15,6 +17,7 @@ namespace TT
         private Transform myTransform;
         private Vector3 cameraTransformPosition;
         public LayerMask ignoreLayers;
+        public LayerMask enviromentLayer;
         private Vector3 cameraFollowVelocity = Vector3.zero;
 
         public static CameraHandler singleton;
@@ -36,6 +39,8 @@ namespace TT
         public float cameraSphereRadius = 0.2f;
         public float cameraCollisionOffset = 0.2f;
         public float minimumCollisionOffset = 0.2f;
+        public float lockedPivotPosition = 2.25f;
+        public float unlockedPivotPosition = 1.65f;
 
         public CharacterManager currentLockOnTarget;
 
@@ -57,6 +62,12 @@ namespace TT
             //when you start a scene, search for player manager and find player
             targetTransform = FindObjectOfType<PlayerManager>().transform;
             inputHandler = FindObjectOfType<InputHandler>();
+            playerManager = FindObjectOfType<PlayerManager>();
+        }
+
+        private void Start()
+        {
+            enviromentLayer = LayerMask.NameToLayer("Environment");
         }
 
         public void FollowTarget(float delta)
@@ -157,10 +168,27 @@ namespace TT
                     float distanceFromTarget = Vector3.Distance(targetTransform.position, character.transform.position);
                     //detecting viewable angle, if target is off screen -> dont lock on (makes camera look forward)
                     float viewableAngle = Vector3.Angle(lockTargetDirection, cameraTransform.forward);
+                    RaycastHit hit;
 
                     if(character.transform.root != targetTransform.transform.root && viewableAngle > -50 && viewableAngle < 50 && distanceFromTarget <= maximumLockOnDistance)
                     {
-                        availableTargets.Add(character);
+                        //this breaks lock On!?
+                        //shoots raycast between 2 points in the game
+                        /*if(Physics.Linecast(playerManager.lockOnTransform.position, character.lockOnTransform.position, out hit))
+                        {
+                            Debug.DrawLine(playerManager.lockOnTransform.position, character.lockOnTransform.position);
+
+                            if(hit.transform.gameObject.layer == enviromentLayer)
+                            {
+                                //cannot lock onto target, object in the way
+                            }
+                            else
+                            {
+                            }
+                        }
+                        */
+                                availableTargets.Add(character);
+                    
                     }
                 }
             }
@@ -208,6 +236,24 @@ namespace TT
 
         }
 
+
+        public void SetCameraHeight()
+        {
+            Vector3 velocity = Vector3.zero;
+            Vector3 newLockedPosition = new Vector3(0, lockedPivotPosition);
+            Vector3 newUnlockedPosition = new Vector3(0, unlockedPivotPosition);
+
+            if(currentLockOnTarget != null)
+            {
+                //adjust camera height
+                cameraPivotTransform.transform.localPosition = Vector3.SmoothDamp(cameraPivotTransform.transform.localPosition, newLockedPosition, ref velocity, Time.deltaTime);
+            }
+            else //not locked on
+            {
+                //adjust camera height
+                cameraPivotTransform.transform.localPosition = Vector3.SmoothDamp(cameraPivotTransform.transform.localPosition, newUnlockedPosition, ref velocity, Time.deltaTime);
+            }
+        }
 
     }
 
