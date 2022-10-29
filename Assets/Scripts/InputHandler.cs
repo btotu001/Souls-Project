@@ -18,6 +18,12 @@ namespace TT
         public bool a_Input;
         public bool rb_Input;
         public bool rt_Input;
+        public bool jump_Input;
+        public bool inventory_Input;
+        public bool lockOnInput;
+        public bool right_Stick_Right_Input;
+        public bool right_Stick_Left_Input;
+
         public bool d_Pad_Up;
         public bool d_Pad_Down;
         public bool d_Pad_Left;
@@ -26,6 +32,8 @@ namespace TT
         public bool rollFlag;
         public bool sprintFlag;
         public bool comboFlag;
+        public bool lockOnFlag;
+        public bool inventoryFlag;
         public float rollInputTimer;
         
 
@@ -34,7 +42,8 @@ namespace TT
         PlayerAttacker playerAttacker;
         PlayerInventory playerInventory;
         PlayerManager playerManager;
-        
+        UIManager uiManager;
+        CameraHandler cameraHandler;
 
         Vector2 movementInput;
         Vector2 cameraInput;
@@ -45,6 +54,8 @@ namespace TT
             playerAttacker = GetComponent<PlayerAttacker>();
             playerInventory = GetComponent<PlayerInventory>();
             playerManager = GetComponent<PlayerManager>();
+            uiManager = FindObjectOfType<UIManager>();
+            cameraHandler = FindObjectOfType<CameraHandler>();
         }
 
 
@@ -56,6 +67,19 @@ namespace TT
                 inputActions = new PlayerControls();
                 inputActions.PlayerMovement.Movement.performed += inputActions => movementInput = inputActions.ReadValue<Vector2>();
                 inputActions.PlayerMovement.Camera.performed += i => cameraInput = i.ReadValue<Vector2>();
+              
+               //moved to only being updated 1 time
+                inputActions.PlayerActions.RB.performed += i => rb_Input = true;
+                inputActions.PlayerActions.RT.performed += i => rt_Input = true;
+                inputActions.QuickSlots.DPadRight.performed += i => d_Pad_Right = true;
+                inputActions.QuickSlots.DPadLeft.performed += i => d_Pad_Left = true;
+                inputActions.PlayerActions.A.performed += i => a_Input = true;
+                inputActions.PlayerActions.Jump.performed += i => jump_Input = true;
+                inputActions.PlayerActions.Inventory.performed += i => inventory_Input = true;
+                inputActions.PlayerActions.LockOn.performed += i => lockOnInput = true; 
+
+                inputActions.PlayerMovement.LockOnTargetRight.performed += i =>  right_Stick_Right_Input = true;
+                inputActions.PlayerMovement.LockOnTargetLeft.performed += i => right_Stick_Left_Input = true;
             }
 
             inputActions.Enable();
@@ -72,7 +96,10 @@ namespace TT
             HandleRollInput(delta);
             HandleAttackInput(delta);
             HandleQuickSlotInput();
-            HandleInteractButtonInput();
+         
+            HandleInventoryInput();
+            HandleLockOnInput();
+           
         }
 
         private void MoveInput(float delta)
@@ -88,11 +115,12 @@ namespace TT
         private void HandleRollInput(float delta)
         {
             b_Input = inputActions.PlayerActions.Roll.phase == UnityEngine.InputSystem.InputActionPhase.Started;
+            sprintFlag = b_Input;
 
             if (b_Input)
             {
                 rollInputTimer += delta;
-                sprintFlag = true;
+              
             }
             else
             {
@@ -108,10 +136,7 @@ namespace TT
 
         private void HandleAttackInput(float delta)
         {
-            inputActions.PlayerActions.RB.performed += i => rb_Input = true;
-            inputActions.PlayerActions.RT.performed += i => rt_Input = true;
-
-
+           
             //RB Input handles the Right hand Weapon's light weapon
             if (rb_Input)
             {
@@ -153,9 +178,7 @@ namespace TT
 
         private void HandleQuickSlotInput()
         {
-            inputActions.QuickSlots.DPadRight.performed += i => d_Pad_Right = true;
-            inputActions.QuickSlots.DPadLeft.performed += i => d_Pad_Left = true;
-
+          
             //when pressing right quickslot, change right hand weapon
             if (d_Pad_Right)
             {
@@ -168,11 +191,78 @@ namespace TT
 
         }
 
-        private void HandleInteractButtonInput()
+        //interact button and jump input deleted
+        
+
+        private void HandleInventoryInput()
         {
-            inputActions.PlayerActions.A.performed += i => a_Input = true;
           
+
+            if (inventory_Input)
+            {
+                inventoryFlag = !inventoryFlag;
+
+                if (inventoryFlag)
+                {
+                    uiManager.OpenSelectWindow();
+                    uiManager.UpdateUI();
+                    uiManager.hudWindow.SetActive(false);
+                }
+                else
+                {
+                    uiManager.CloseSelectWindow();
+                    uiManager.CloseAllInventoryWindows();
+                    uiManager.hudWindow.SetActive(true);
+                }
+            }
         }
+
+        private void HandleLockOnInput()
+        {
+            if(lockOnInput && lockOnFlag == false)
+            {
+                
+                lockOnInput = false;
+                //lockOnFlag = true;
+                cameraHandler.HandleLockOn();
+                if(cameraHandler.nearestLockOnTarget != null)
+                {
+                    cameraHandler.currentLockOnTarget = cameraHandler.nearestLockOnTarget;
+                    lockOnFlag = true;
+                }
+            }
+            else if (lockOnInput && lockOnFlag)
+            {
+                lockOnInput = false;
+                lockOnFlag = false;
+                //clear lock on targets
+                cameraHandler.ClearLockOnTargets();
+            }
+
+            //handle target switch to left
+            if(lockOnFlag && right_Stick_Left_Input)
+            {
+                right_Stick_Left_Input = false; //reset the input after doing it
+                cameraHandler.HandleLockOn();
+                if(cameraHandler.leftLockTarget != null)
+                {
+                    cameraHandler.currentLockOnTarget = cameraHandler.leftLockTarget;
+                }
+            }
+            //handle target switch to right
+            if (lockOnFlag && right_Stick_Right_Input)
+            {
+                right_Stick_Right_Input = false; //reset the input after doing it
+                cameraHandler.HandleLockOn();
+                if (cameraHandler.rightLockTarget != null)
+                {
+                    cameraHandler.currentLockOnTarget = cameraHandler.rightLockTarget;
+                }
+            }
+        }
+
+        
+
 
     }
 }
