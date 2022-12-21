@@ -172,9 +172,10 @@ namespace TT
 
                     if(character.transform.root != targetTransform.transform.root && viewableAngle > -50 && viewableAngle < 50 && distanceFromTarget <= maximumLockOnDistance)
                     {
-                        //this breaks lock On!?
+                        //this breaks lock On!? -- FIXED player to not be on controller layer
                         //shoots raycast between 2 points in the game
-                        /*if(Physics.Linecast(playerManager.lockOnTransform.position, character.lockOnTransform.position, out hit))
+                        
+                        if(Physics.Linecast(playerManager.lockOnTransform.position, character.lockOnTransform.position, out hit))
                         {
                             Debug.DrawLine(playerManager.lockOnTransform.position, character.lockOnTransform.position);
 
@@ -184,10 +185,11 @@ namespace TT
                             }
                             else
                             {
+                                availableTargets.Add(character);
                             }
                         }
-                        */
-                                availableTargets.Add(character);
+                        
+                        
                     
                     }
                 }

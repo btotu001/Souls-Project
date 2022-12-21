@@ -17,10 +17,10 @@ TagManager:
   - 
   - 
   - Environment
-  - 
+  - Character
   - Controller
-  - 
-  - 
+  - Character Collider Blocker
+  - Player
   - 
   - 
   - 

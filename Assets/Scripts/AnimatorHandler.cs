@@ -5,10 +5,11 @@ using UnityEngine;
 
 namespace TT
 {
-    public class AnimatorHandler : MonoBehaviour
+    //Animator handler for player
+    public class AnimatorHandler : AnimatorManager
     {
         PlayerManager playerManager;
-        public Animator anim;
+       
         InputHandler inputHandler;
         PlayerLocomotion playerLocomotion;
         int vertical;
@@ -61,6 +62,14 @@ namespace TT
             {
                 h = 0.5f;
             }
+            else if (horizontalMovement > 0.55f)
+            {
+                h = 1;
+            }
+            else if (horizontalMovement < 0 && horizontalMovement > -0.55f)
+            {
+                h = -0.5f;
+            }
             else if(horizontalMovement < -0.55f)
             {
                 h = -1;
@@ -81,12 +90,7 @@ namespace TT
             anim.SetFloat(horizontal, h, 0.1f, Time.deltaTime);
         }
 
-        public void PlayTargetAnimation(string targetAnim, bool isInteracting)
-        {
-            anim.applyRootMotion = isInteracting;
-            anim.SetBool("isInteracting", isInteracting);
-            anim.CrossFade(targetAnim, 0.2f);
-        }
+     
 
         public void CanRotate()
         {
@@ -105,6 +109,16 @@ namespace TT
         public void DisableCombo()
         {
             anim.SetBool("canDoCombo", false);
+        }
+
+        public void EnableIsInvulnerable()
+        {
+            anim.SetBool("isInvulnerable", true);
+        }
+
+        public void DisableIsVulnerable()
+        {
+            anim.SetBool("isInvulnerable", false);
         }
 
         private void OnAnimatorMove()
