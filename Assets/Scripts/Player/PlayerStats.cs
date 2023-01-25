@@ -12,7 +12,7 @@ namespace TT
         public StaminaBar staminaBar;
         public FocusPointBar focusPointBar;
 
-        AnimatorHandler animatorHandler;
+        PlayerAnimatorManager animatorHandler;
 
         public float staminaRegenerationAmount = 1;
         public float staminaRegenerationTimer = 0;
@@ -22,7 +22,7 @@ namespace TT
             playerManager = GetComponent<PlayerManager>();
             //healthBar = FindObjectOfType<HealthBar>();
             staminaBar = FindObjectOfType<StaminaBar>();
-            animatorHandler = GetComponentInChildren<AnimatorHandler>();
+            animatorHandler = GetComponentInChildren<PlayerAnimatorManager>();
         }
 
         private void Start()
@@ -63,6 +63,19 @@ namespace TT
             return maxFocusPoints;
         }
 
+        public void TakeDamageNoAnimation(int damage)
+        {
+            currentHealth = currentHealth - damage;
+
+            healthBar.SetCurrentHealth(currentHealth);
+
+            if (currentHealth <= 0)
+            {
+                currentHealth = 0;
+                isDead = true;
+            }
+        }
+
         public void TakeDamage(int damage)
         {
             //if player is in rolling invulnerability for example
@@ -84,6 +97,7 @@ namespace TT
                 isDead = true;
             }
         }
+
 
         public void DecreaseStamina(int amount)
         {

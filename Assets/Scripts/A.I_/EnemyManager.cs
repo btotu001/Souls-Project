@@ -42,9 +42,10 @@ namespace TT
             enemyLocomotionManager = GetComponent<EnemyLocomotionManager>();
             enemyAnimatorManager = GetComponentInChildren<EnemyAnimatorManager>();
             enemyStats = GetComponent<EnemyStats>();
+            enemyRigidbody = GetComponent<Rigidbody>();
+            backStabCollider = GetComponentInChildren<BackStabCollider>();
             navMeshAgent = GetComponentInChildren<NavMeshAgent>();
             navMeshAgent.enabled = false;
-            enemyRigidbody = GetComponent<Rigidbody>();
         }
 
         private void Start()
@@ -56,6 +57,7 @@ namespace TT
             HandleRecoveryTimer();
 
             isInteracting = enemyAnimatorManager.anim.GetBool("isInteracting");
+            enemyAnimatorManager.anim.SetBool("isDead", enemyStats.isDead);
         }
 
         //rigidbody movement better on fixed update

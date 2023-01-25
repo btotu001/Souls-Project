@@ -31,6 +31,19 @@ namespace TT
             return maxHealth;
         }
 
+        public void TakeDamageNoAnimation(int damage)
+        {
+            currentHealth = currentHealth - damage;
+
+            healthBar.SetCurrentHealth(currentHealth);
+           
+            if (currentHealth <= 0)
+            {
+                currentHealth = 0;
+                isDead = true;
+            }
+        }
+
         public void TakeDamage(int damage)
         {
             if (isDead)

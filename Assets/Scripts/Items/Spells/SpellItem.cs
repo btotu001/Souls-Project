@@ -23,12 +23,12 @@ namespace TT
         public string spellDesc;
 
         //warmup phase for spell casting
-        public virtual void AttempToCastSpell(AnimatorHandler animatorHandler, PlayerStats playerStats)
+        public virtual void AttempToCastSpell(PlayerAnimatorManager animatorHandler, PlayerStats playerStats)
         {
             Debug.Log("Attempted to cast a spell!");
         }
 
-        public virtual void SuccessfullyCastSpell(AnimatorHandler animatorHandler, PlayerStats playerStats)
+        public virtual void SuccessfullyCastSpell(PlayerAnimatorManager animatorHandler, PlayerStats playerStats)
         {
             Debug.Log("Successfully casted a spell!");
             playerStats.DecreaseFocusPoints(focusPointCost);

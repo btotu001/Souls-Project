@@ -18,7 +18,7 @@ namespace TT
 
         //for animations
         [HideInInspector]
-        public AnimatorHandler animatorHandler;
+        public PlayerAnimatorManager animatorHandler;
 
 
         public new Rigidbody rigidbody;
@@ -62,7 +62,7 @@ namespace TT
             inputHandler = GetComponent<InputHandler>();
 
             //for animations, InChildren because we put it in player model
-            animatorHandler = GetComponentInChildren<AnimatorHandler>();
+            animatorHandler = GetComponentInChildren<PlayerAnimatorManager>();
             cameraObject = Camera.main.transform;
             myTransform = transform;
 
@@ -327,6 +327,7 @@ namespace TT
             if (playerManager.isInteracting)
                 return;
 
+            //ADD COLLIDER MOVING UP?
             if(inputHandler.jump_Input)
             {
                 if(inputHandler.moveAmount > 0)

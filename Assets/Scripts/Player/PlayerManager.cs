@@ -31,6 +31,7 @@ namespace TT
         private void Awake()
         {
             cameraHandler = FindObjectOfType<CameraHandler>();
+            backStabCollider = GetComponentInChildren<BackStabCollider>();
         }
 
         void Start()
@@ -54,6 +55,7 @@ namespace TT
             isUsingLeftHand = anim.GetBool("isUsingLeftHand");
             isInvulnerable = anim.GetBool("isInvulnerable");
             anim.SetBool("isInAir", isInAir);
+            anim.SetBool("isDead", playerStats.isDead);
 
             inputHandler.TickInput(delta);
             playerLocomotion.HandleRollingAndSprinting(delta);
@@ -113,7 +115,7 @@ namespace TT
         RaycastHit hit;
             if(Physics.SphereCast(transform.position, 0.3f, transform.forward, out hit, 1f, cameraHandler.ignoreLayers))
             {
-                Debug.Log("Interact");
+               // Debug.Log("Interact");
                 if (hit.collider.tag == "Interactable")
                 {
                     Interactable interactableObject = hit.collider.GetComponent<Interactable>();

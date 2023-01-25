@@ -6,9 +6,10 @@ using UnityEngine;
 namespace TT
 {
     //Animator handler for player
-    public class AnimatorHandler : AnimatorManager
+    public class PlayerAnimatorManager : AnimatorManager
     {
         PlayerManager playerManager;
+        PlayerStats playerStats;
        
         InputHandler inputHandler;
         PlayerLocomotion playerLocomotion;
@@ -20,6 +21,7 @@ namespace TT
         public void Initialize()
         {
             playerManager = GetComponentInParent<PlayerManager>();
+            playerStats = GetComponentInParent<PlayerStats>();
             anim = GetComponent<Animator>();
             inputHandler = GetComponentInParent<InputHandler>();
             playerLocomotion = GetComponentInParent<PlayerLocomotion>();
@@ -119,6 +121,12 @@ namespace TT
         public void DisableIsVulnerable()
         {
             anim.SetBool("isInvulnerable", false);
+        }
+
+        public override void TakeCriticalDamageAnimationEvent()
+        {
+           playerStats.TakeDamageNoAnimation(playerManager.pendingCriticalDamage);
+            playerManager.pendingCriticalDamage = 0; //reset pending dmg
         }
 
         private void OnAnimatorMove()

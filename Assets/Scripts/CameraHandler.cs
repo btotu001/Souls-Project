@@ -58,7 +58,7 @@ namespace TT
             myTransform = transform;
             defaultPosition = cameraTransform.localPosition.z;
             //ignore some layers in collision
-            ignoreLayers = ~(1 << 8 | 1 << 9 | 1 << 10);
+            //ignoreLayers = ~(1 << 8 | 1 << 9 | 1 << 10);
             //when you start a scene, search for player manager and find player
             targetTransform = FindObjectOfType<PlayerManager>().transform;
             inputHandler = FindObjectOfType<InputHandler>();
@@ -67,6 +67,7 @@ namespace TT
 
         private void Start()
         {
+            //DELETE? EP:42 17:40
             enviromentLayer = LayerMask.NameToLayer("Environment");
         }
 
