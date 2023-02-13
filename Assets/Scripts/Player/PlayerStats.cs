@@ -76,7 +76,8 @@ namespace TT
             }
         }
 
-        public void TakeDamage(int damage)
+        //Animation played when taking damage is "Damage_1" by default, others can be given in function call (if needed)
+        public override void TakeDamage(int damage, string damageAnimation = "Damage_1")
         {
             //if player is in rolling invulnerability for example
             if (playerManager.isInvulnerable)
@@ -87,7 +88,7 @@ namespace TT
             currentHealth = currentHealth - damage;
 
             healthBar.SetCurrentHealth(currentHealth);
-            animatorHandler.PlayTargetAnimation("Damage_1", true);
+            animatorHandler.PlayTargetAnimation(damageAnimation, true);
 
             if (currentHealth <= 0)
             {
@@ -103,6 +104,12 @@ namespace TT
         {
             currentStamina = currentStamina - amount;
             staminaBar.SetCurrentStamina(currentStamina);
+
+            //check for preventing negative values -> leading to longer recovery times
+            if(currentStamina <= 0)
+            {
+                currentStamina = 0;
+            }
         }
 
         public void RegenerateStamina()
@@ -146,6 +153,11 @@ namespace TT
             }
 
             focusPointBar.SetCurrentFP(currentFocusPoints);
+        }
+
+        public void AddSouls(int souls)
+        {
+            soulCount = soulCount + souls;
         }
     }
 

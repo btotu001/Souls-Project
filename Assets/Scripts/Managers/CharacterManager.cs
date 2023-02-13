@@ -10,8 +10,17 @@ namespace TT
         public Transform lockOnTransform;
 
         [Header("Combat Colliders")]
-        public BoxCollider backStabBoxCollider;
-        public BackStabCollider backStabCollider;
+        public CriticalDamageCollider backStabCollider;
+        public CriticalDamageCollider riposteCollider;
+
+        [Header("Combat Flags")]
+        public bool canBeRiposted;
+        public bool canBeParried;
+        public bool isParrying;
+        public bool isBlocking;
+
+        [Header("Spells")]
+        public bool isFiringSpell;
 
         //Damage will be inflicted during an animation event
         //Used in backstab or riposte anim

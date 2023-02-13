@@ -18,6 +18,13 @@ namespace TT
         public float maxFocusPoints;
         public float currentFocusPoints;
 
+        public int soulCount = 0;
+
         public bool isDead;
+
+        public virtual void TakeDamage(int damage, string damageAnimation = "Damage_1")
+        {
+
+        }
     }
 }

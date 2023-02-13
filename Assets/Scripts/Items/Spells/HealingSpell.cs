@@ -9,18 +9,18 @@ namespace TT
     {
         public int healAmount;
 
-        public override void AttempToCastSpell(PlayerAnimatorManager animatorHandler, PlayerStats playerStats)
+        public override void AttempToCastSpell(PlayerAnimatorManager animatorHandler, PlayerStats playerStats, WeaponSlotManager weaponSlotManager)
         {
-            base.AttempToCastSpell(animatorHandler, playerStats);   
+            base.AttempToCastSpell(animatorHandler, playerStats, weaponSlotManager);   
             GameObject instantiatedWarmUpSpellFX = Instantiate(spellWarmUpFX, animatorHandler.transform);
             animatorHandler.PlayTargetAnimation(spellAnimation, true);
             Debug.Log("Attempting to cast spell");
         }
 
-        public override void SuccessfullyCastSpell(PlayerAnimatorManager animatorHandler, PlayerStats playerStats)
+        public override void SuccessfullyCastSpell(PlayerAnimatorManager animatorHandler, PlayerStats playerStats, CameraHandler cameraHandler, WeaponSlotManager weaponSlotManager)
         {
             //calls base class (SpellItem) to decrease FP from there
-            base.SuccessfullyCastSpell(animatorHandler, playerStats);
+            base.SuccessfullyCastSpell(animatorHandler, playerStats, cameraHandler, weaponSlotManager);
             GameObject instantiatedSpellFX = Instantiate(spellCastFX, animatorHandler.transform);
             playerStats.HealPlayer(healAmount);
             Debug.Log("Successfully casted spell");

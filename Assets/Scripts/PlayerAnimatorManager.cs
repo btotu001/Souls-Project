@@ -15,7 +15,7 @@ namespace TT
         PlayerLocomotion playerLocomotion;
         int vertical;
         int horizontal;
-        public bool canRotate;
+        
 
         //initializing the parameters
         public void Initialize()
@@ -96,12 +96,12 @@ namespace TT
 
         public void CanRotate()
         {
-            canRotate = true;
+            anim.SetBool("canRotate", true);
         }
 
         public void StopRotation()
         {
-            canRotate = false;
+            anim.SetBool("canRotate", false);
         }
 
         public void EnableCombo()
@@ -121,6 +121,26 @@ namespace TT
         public void DisableIsVulnerable()
         {
             anim.SetBool("isInvulnerable", false);
+        }
+
+        public void EnableIsParrying()
+        {
+            playerManager.isParrying = true;
+        }
+
+        public void DisableIsParrying()
+        {
+            playerManager.isParrying = false;
+        }
+
+        public void EnableCanBeRiposted()
+        {
+            playerManager.canBeRiposted = true;
+        }
+
+        public void DisableCanBeRiposted()
+        {
+            playerManager.canBeRiposted = false;
         }
 
         public override void TakeCriticalDamageAnimationEvent()

@@ -28,14 +28,20 @@ namespace TT
         // public EnemyAttackAction[] enemyAttacks;
         // public EnemyAttackAction currentAttack;
 
+        [Header("Combat Flags")]
+        public bool canDoCombo;
+
         [Header("A.I Settings")]
         public float detectionRadius = 20;
         //The higher, lower, respectively these angles are, the greater detection FOV (like eye sight)
         public float maximumDetectionAngle = 50;
         public float minimumDetectionAngle = -50;
        
-
         public float currentRecoveryTime = 0;
+
+        [Header("A.I Combat Settings")]
+        public bool allowAIToPerformCombos;
+        public float comboLikelyHood;
 
         private void Awake()
         {
@@ -43,7 +49,7 @@ namespace TT
             enemyAnimatorManager = GetComponentInChildren<EnemyAnimatorManager>();
             enemyStats = GetComponent<EnemyStats>();
             enemyRigidbody = GetComponent<Rigidbody>();
-            backStabCollider = GetComponentInChildren<BackStabCollider>();
+           
             navMeshAgent = GetComponentInChildren<NavMeshAgent>();
             navMeshAgent.enabled = false;
         }
@@ -55,18 +61,21 @@ namespace TT
         private void Update()
         {
             HandleRecoveryTimer();
+            HandleStateMachine();
 
             isInteracting = enemyAnimatorManager.anim.GetBool("isInteracting");
+            canDoCombo = enemyAnimatorManager.anim.GetBool("canDoCombo"); //when animatorManager enables, enable here too
             enemyAnimatorManager.anim.SetBool("isDead", enemyStats.isDead);
         }
 
-        //rigidbody movement better on fixed update
-        private void FixedUpdate()
+        //rigidbody movement better on fixed/late update
+        private void LateUpdate()
         {
-            HandleStateMachine();
+            navMeshAgent.transform.localPosition = Vector3.zero;
+            navMeshAgent.transform.localRotation = Quaternion.identity;
 
-           
         }
+        
 
         private void HandleStateMachine()
         {

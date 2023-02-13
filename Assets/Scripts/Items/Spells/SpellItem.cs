@@ -23,12 +23,13 @@ namespace TT
         public string spellDesc;
 
         //warmup phase for spell casting
-        public virtual void AttempToCastSpell(PlayerAnimatorManager animatorHandler, PlayerStats playerStats)
+        //righthandslot from WeaponSlotManager is a weapon holder slot
+        public virtual void AttempToCastSpell(PlayerAnimatorManager animatorHandler, PlayerStats playerStats, WeaponSlotManager weaponSlotManager)
         {
             Debug.Log("Attempted to cast a spell!");
         }
 
-        public virtual void SuccessfullyCastSpell(PlayerAnimatorManager animatorHandler, PlayerStats playerStats)
+        public virtual void SuccessfullyCastSpell(PlayerAnimatorManager animatorHandler, PlayerStats playerStats, CameraHandler cameraHandler, WeaponSlotManager weaponSlotManager)
         {
             Debug.Log("Successfully casted a spell!");
             playerStats.DecreaseFocusPoints(focusPointCost);

@@ -8,20 +8,22 @@ namespace TT
     public class EnemyStats : CharacterStats
     {
        
-        public HealthBar healthBar;
+        public UIEnemyHealthBar enemyHealthBar;
+       
+        EnemyAnimatorManager enemyAnimatorManager;
 
-        Animator animator;
+        public int soulsAwardedOnDeath = 50;
 
         private void Awake()
         {
-            animator = GetComponentInChildren<Animator>();
+            enemyAnimatorManager = GetComponentInChildren<EnemyAnimatorManager>();
         }
 
         private void Start()
         {
             maxHealth = SetMaxHealthFromHealthLevel();
             currentHealth = maxHealth;
-            healthBar.SetMaxHealth(maxHealth);
+            enemyHealthBar.SetMaxHealth(maxHealth);
 
         }
 
@@ -34,8 +36,7 @@ namespace TT
         public void TakeDamageNoAnimation(int damage)
         {
             currentHealth = currentHealth - damage;
-
-            healthBar.SetCurrentHealth(currentHealth);
+            enemyHealthBar.SetCurrentHealth(currentHealth);
            
             if (currentHealth <= 0)
             {
@@ -44,7 +45,7 @@ namespace TT
             }
         }
 
-        public void TakeDamage(int damage)
+        public override void TakeDamage(int damage, string damageAnimation = "Damage_1")
         {
             if (isDead)
                 return;
@@ -52,16 +53,23 @@ namespace TT
 
             currentHealth = currentHealth - damage;
 
-            healthBar.SetCurrentHealth(currentHealth);
-            animator.Play("Damage_1");
+            enemyHealthBar.SetCurrentHealth(currentHealth);
+            enemyAnimatorManager.PlayTargetAnimation(damageAnimation, true);
 
             if (currentHealth <= 0)
             {
-                currentHealth = 0;
-                animator.Play("Death_1");
-                // HANDLE enemy DEATH
-                isDead = true;
+                HandleDeath();
             }
+        }
+
+        private void HandleDeath()
+        {
+            currentHealth = 0;
+            enemyAnimatorManager.PlayTargetAnimation("Death_1", true);
+            // HANDLE enemy DEATH
+            isDead = true;
+
+            
         }
     }
 

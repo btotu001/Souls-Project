@@ -17,6 +17,9 @@ namespace TT
         public int baseDamage = 25;
         public int criticalDamageMultiplier = 4;
 
+        [Header("Absorption")]
+        public float physicalDamageAbsorption;
+
         [Header("Idle AAnimations")]
         public string right_hand_idle;
         public string left_hand_idle;
@@ -32,6 +35,9 @@ namespace TT
         public string TH_Light_Attack_1;
         public string TH_Light_Attack_2;
 
+        [Header("Weapon Art")]
+        public string weapon_art; //(animation to call)
+
         [Header("Stamina Costs")]
         public int baseStamina;
         public float lightAttackMultiplier;
@@ -42,6 +48,7 @@ namespace TT
         public bool isSpellCaster;
         public bool isFaithCaster;
         public bool isPyroCaster;
+        public bool isShieldWeapon;
 
     }
 

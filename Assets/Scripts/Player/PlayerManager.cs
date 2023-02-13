@@ -12,6 +12,7 @@ namespace TT
         CameraHandler cameraHandler;
         PlayerLocomotion playerLocomotion;
         PlayerStats playerStats;
+        PlayerAnimatorManager playerAnimatorManager;
 
         InteractableUI interactableUI;
         public GameObject interactableUIGameObject;
@@ -27,23 +28,24 @@ namespace TT
         public bool isUsingRightHand;
         public bool isUsingLeftHand;
         public bool isInvulnerable;
+       
 
         private void Awake()
         {
-            cameraHandler = FindObjectOfType<CameraHandler>();
-            backStabCollider = GetComponentInChildren<BackStabCollider>();
-        }
+            Application.targetFrameRate = 60; //Move to game manager
 
-        void Start()
-        {
-            Application.targetFrameRate = 60;
+            cameraHandler = FindObjectOfType<CameraHandler>();
+            backStabCollider = GetComponentInChildren<CriticalDamageCollider>();
+
             inputHandler = GetComponent<InputHandler>();
+            playerAnimatorManager = GetComponentInChildren<PlayerAnimatorManager>();
             anim = GetComponentInChildren<Animator>();
             playerLocomotion = GetComponent<PlayerLocomotion>();
             playerStats = GetComponent<PlayerStats>();
             interactableUI = FindObjectOfType<InteractableUI>();
         }
 
+       
        
         void Update()
         {
@@ -54,10 +56,14 @@ namespace TT
             isUsingRightHand = anim.GetBool("isUsingRightHand");
             isUsingLeftHand = anim.GetBool("isUsingLeftHand");
             isInvulnerable = anim.GetBool("isInvulnerable");
+            isFiringSpell = anim.GetBool("isFiringSpell");
+            anim.SetBool("isBlocking", isBlocking);
             anim.SetBool("isInAir", isInAir);
             anim.SetBool("isDead", playerStats.isDead);
+            
 
             inputHandler.TickInput(delta);
+            playerAnimatorManager.canRotate = anim.GetBool("canRotate");
             playerLocomotion.HandleRollingAndSprinting(delta);
             playerLocomotion.HandleJumping();
             playerStats.RegenerateStamina();
@@ -70,8 +76,10 @@ namespace TT
         private void FixedUpdate()
         {
             float delta = Time.fixedDeltaTime;
+
             playerLocomotion.HandleMovement(delta);
             playerLocomotion.HandleFalling(delta, playerLocomotion.moveDirection);
+            playerLocomotion.HandleRotation(delta);
         
 
         }
@@ -84,6 +92,7 @@ namespace TT
               
                 inputHandler.rb_Input = false;
                 inputHandler.rt_Input = false;
+                inputHandler.lt_Input = false;
                 inputHandler.d_Pad_Up = false;
                 inputHandler.d_Pad_Down = false;
                 inputHandler.d_Pad_Left = false;
@@ -107,6 +116,8 @@ namespace TT
                 }
 
         }
+
+        #region Player Interactions
 
         //TODO CHange to just ontriggerenter?
         public void CheckForInteractableObject()
@@ -172,6 +183,16 @@ namespace TT
             }
         }
         */
+
+        public void OpenChestInteraction(Transform playerStandPoint)
+        {
+            playerLocomotion.rigidbody.velocity = Vector3.zero; // Stops the player from "ice skating"
+            transform.position = playerStandPoint.transform.position;
+            playerAnimatorManager.PlayTargetAnimation("Open Chest", true);
+
+        }
+
+        #endregion
 
 
 

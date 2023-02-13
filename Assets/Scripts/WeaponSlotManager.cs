@@ -12,8 +12,8 @@ namespace TT
 
         public WeaponItem attackingWeapon;
 
-        WeaponHolderSlot leftHandSlot;
-        WeaponHolderSlot rightHandSlot;
+        public WeaponHolderSlot leftHandSlot;
+        public WeaponHolderSlot rightHandSlot;
         WeaponHolderSlot backSlot;
 
         public DamageCollider leftHandDamageCollider;

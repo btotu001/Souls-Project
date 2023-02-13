@@ -18,7 +18,9 @@ namespace TT
         public bool a_Input;
         public bool y_Input;
         public bool rb_Input;
+        public bool lb_Input;
         public bool rt_Input;
+        public bool lt_Input;
         public bool critical_Attack_Input;
         public bool jump_Input;
         public bool inventory_Input;
@@ -45,6 +47,8 @@ namespace TT
         PlayerAttacker playerAttacker;
         PlayerInventory playerInventory;
         PlayerManager playerManager;
+        PlayerStats playerStats;
+        BlockingCollider blockingCollider;
         WeaponSlotManager weaponSlotManager;
         UIManager uiManager;
         CameraHandler cameraHandler;
@@ -59,7 +63,9 @@ namespace TT
             playerAttacker = GetComponentInChildren<PlayerAttacker>();
             playerInventory = GetComponent<PlayerInventory>();
             playerManager = GetComponent<PlayerManager>();
+            playerStats = GetComponent<PlayerStats>();
             weaponSlotManager = GetComponentInChildren<WeaponSlotManager>();
+            blockingCollider = GetComponentInChildren<BlockingCollider>();
             uiManager = FindObjectOfType<UIManager>();
             cameraHandler = FindObjectOfType<CameraHandler>();
             animatorHandler = GetComponentInChildren<PlayerAnimatorManager>();
@@ -77,10 +83,17 @@ namespace TT
               
                //moved to only being updated 1 time
                 inputActions.PlayerActions.RB.performed += i => rb_Input = true;
+                inputActions.PlayerActions.LB.performed += i => lb_Input = true;
+                inputActions.PlayerActions.LB.canceled += i => lb_Input = false;
                 inputActions.PlayerActions.RT.performed += i => rt_Input = true;
+                inputActions.PlayerActions.LT.performed += i => lt_Input = true;
                 inputActions.QuickSlots.DPadRight.performed += i => d_Pad_Right = true;
                 inputActions.QuickSlots.DPadLeft.performed += i => d_Pad_Left = true;
                 inputActions.PlayerActions.A.performed += i => a_Input = true;
+
+                inputActions.PlayerActions.Roll.performed += i => b_Input = true;
+                inputActions.PlayerActions.Roll.canceled += i => b_Input = false;
+
                 inputActions.PlayerActions.Jump.performed += i => jump_Input = true;
                 inputActions.PlayerActions.Inventory.performed += i => inventory_Input = true;
                 inputActions.PlayerActions.LockOn.performed += i => lockOnInput = true; 
@@ -103,7 +116,7 @@ namespace TT
         {
             HandleMoveInput(delta);
             HandleRollInput(delta);
-            HandleAttackInput(delta);
+            HandleCombatInput(delta);
             HandleQuickSlotInput();
          
             HandleInventoryInput();
@@ -125,19 +138,31 @@ namespace TT
 
         private void HandleRollInput(float delta)
         {
-            b_Input = inputActions.PlayerActions.Roll.phase == UnityEngine.InputSystem.InputActionPhase.Started;
-            sprintFlag = b_Input;
-
+            //b_Input = inputActions.PlayerActions.Roll.phase == UnityEngine.InputSystem.InputActionPhase.Started;
+           
             if (b_Input)
             {
                 rollInputTimer += delta;
+
+                if(playerStats.currentStamina <= 0)
+                {
+                    b_Input = false;
+                    sprintFlag = false;
+                }
+
+                if(moveAmount > 0.5f && playerStats.currentStamina > 0)
+                {
+                    sprintFlag = true;
+                }
               
             }
             else
             {
-                if(rollInputTimer > 0 && rollInputTimer < 0.5f)
+                sprintFlag = false;
+
+                if (rollInputTimer > 0 && rollInputTimer < 0.5f)
                 {
-                    sprintFlag = false;
+                   
                     rollFlag = true;
                 }
 
@@ -145,7 +170,7 @@ namespace TT
             }
         }
 
-        private void HandleAttackInput(float delta)
+        private void HandleCombatInput(float delta)
         {
            
             //RB Input handles the Right hand Weapon's light weapon
@@ -166,6 +191,43 @@ namespace TT
                     return;
                 }
                 playerAttacker.HandleHeavyAttack(playerInventory.rightWeapon);
+            }
+
+            if (lb_Input)
+            {
+                //Do a block
+               
+                playerAttacker.HandleLBAction();
+            }
+            else
+            {
+                playerManager.isBlocking = false;
+
+                if (blockingCollider.blockCollider.enabled)
+                {
+                    blockingCollider.DisableBlockingCollider(); //can be alternatively done as animation event in block(end) animation
+                }
+            }
+
+
+            if (lt_Input)
+            {
+                //Handle weapon art in future
+
+                if (twoHandFlag)
+                {
+                     //if two handing handle weapon art
+
+                }
+                else
+                {
+                    //else handle light attack if melee weapon
+                    //handle weapon art if shield
+                    playerAttacker.HandleLTAction();
+
+                }
+
+
             }
         }
 
