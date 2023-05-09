@@ -2,46 +2,61 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 namespace TT
 {
-    public class CombatStanceState : State
+    public class PursueTargetState : State
     {
-        public AttackState attackState;
-        public PursueTargetState pursueTargetState;
+        public CombatStanceState combatStanceState;
+        public RotateTowardsTargetState rotateTowardsTargetState;
+   
         public override State Tick(EnemyManager enemyManager, EnemyStats enemyStats, EnemyAnimatorManager enemyAnimatorManager)
         {
+            //look targets direction
+            Vector3 targetDirection = enemyManager.currentTarget.transform.position - enemyManager.transform.position;
+
+            float distanceFromTarget = Vector3.Distance(enemyManager.currentTarget.transform.position, enemyManager.transform.position);
+
+            //set angle
+            float viewableAngle = Vector3.SignedAngle(targetDirection, enemyManager.transform.forward, Vector3.up);
+
+
+            //before navmesh resets
+            HandleRotateTowardsTarget(enemyManager);
+
+           
+
             if (enemyManager.isInteracting)
                 return this;
 
-            float distanceFromTarget = Vector3.Distance(enemyManager.currentTarget.transform.position, enemyManager.transform.position);
-            //potentially circle player or walk around them
-
-            HandleRotateTowardsTarget(enemyManager);
-
+            //dont move if perfoming action
             if (enemyManager.isPerformingAction)
             {
                 enemyAnimatorManager.anim.SetFloat("Vertical", 0, 0.1f, Time.deltaTime);
-            }
-
-            //CHeck for attack range, 
-            //if in attack range return attack state 
-            if(enemyManager.currentRecoveryTime <= 0 && distanceFromTarget <= enemyManager.maximumAttackRange)
-            {
-                return attackState;
-            }
-            //if the player runs out of range, return the pursuetarget state
-            else if (distanceFromTarget > enemyManager.maximumAttackRange)
-            {
-                return pursueTargetState;
-            }
-
-            //if we are in a cooldown after attacking, return this state and continue circling player
-            else 
-            { 
-                //shouldnt happen
                 return this;
             }
+
+           
+            if (distanceFromTarget > enemyManager.maximumAggroRadius)
+            {
+                enemyAnimatorManager.anim.SetFloat("Vertical", 1, 0.1f, Time.deltaTime);
+            }
+           
+
+            //Change the target
+            //If within attack range switch to combat stance
+            //if target is out of range, return this state and continue to chase target
+            if(distanceFromTarget <= enemyManager.maximumAggroRadius)
+            {
+                return combatStanceState;
+            }
+            else
+            {
+                return this;
+            }
+
         }
+
 
         private void HandleRotateTowardsTarget(EnemyManager enemyManager)
         {

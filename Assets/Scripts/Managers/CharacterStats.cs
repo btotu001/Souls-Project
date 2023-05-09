@@ -20,11 +20,40 @@ namespace TT
 
         public int soulCount = 0;
 
+        [Header("Armor Absorptions")]
+        public float physicalDamageAbsorption;
+
+        //Fire Absorption
+        //Lightning Absorption
+        //Magic
+        //Dark
+
         public bool isDead;
 
-        public virtual void TakeDamage(int damage, string damageAnimation = "Damage_1")
+        public virtual void TakeDamage(int physicalDamage, string damageAnimation = "Damage_1")
         {
+            if (isDead)
+                return;
+            
+            //for other armor part absortions, add to this
+            float totalPhysicalDamageAbsorption = 1 - (1 - physicalDamageAbsorption / 100);
 
+            physicalDamage = Mathf.RoundToInt(physicalDamage - (physicalDamage * totalPhysicalDamageAbsorption));
+            Debug.Log("Physical is " + physicalDamage);
+            Debug.Log("Damage absorption is " + totalPhysicalDamageAbsorption + " %");
+
+            float finalDamage = physicalDamage; //+ fireDamage + magicDamage + lightningDamage + darkDamage
+
+            currentHealth = Mathf.RoundToInt(currentHealth - finalDamage); 
+
+            Debug.Log("Total Damage is " + finalDamage);
+
+            //Death logic
+            if(currentHealth <= 0)
+            {
+                currentHealth = 0;
+                isDead = true;
+            }
         }
     }
 }

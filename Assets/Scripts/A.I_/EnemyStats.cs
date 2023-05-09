@@ -8,22 +8,29 @@ namespace TT
     public class EnemyStats : CharacterStats
     {
        
-        public UIEnemyHealthBar enemyHealthBar;
-       
         EnemyAnimatorManager enemyAnimatorManager;
-
+        EnemyBossManager enemyBossManager;
+        public UIEnemyHealthBar enemyHealthBar;
         public int soulsAwardedOnDeath = 50;
+
+        public bool isBoss;
 
         private void Awake()
         {
             enemyAnimatorManager = GetComponentInChildren<EnemyAnimatorManager>();
+            enemyBossManager = GetComponent<EnemyBossManager>();
+            maxHealth = SetMaxHealthFromHealthLevel();
+            currentHealth = maxHealth;
         }
 
         private void Start()
         {
-            maxHealth = SetMaxHealthFromHealthLevel();
-            currentHealth = maxHealth;
-            enemyHealthBar.SetMaxHealth(maxHealth);
+            //set healthbar only for noraml enemies
+            if (!isBoss)
+            {
+                enemyHealthBar.SetMaxHealth(maxHealth);
+            }
+          
 
         }
 
@@ -45,15 +52,21 @@ namespace TT
             }
         }
 
+        //override from character stats
         public override void TakeDamage(int damage, string damageAnimation = "Damage_1")
         {
-            if (isDead)
-                return;
+
+            base.TakeDamage(damage, damageAnimation = "Damage_1");
+
+            if (!isBoss)
+            {
+                enemyHealthBar.SetCurrentHealth(currentHealth);
+            }
+            else if(isBoss && enemyBossManager != null)
+            {
+                enemyBossManager.UpdateBossHealthBar(currentHealth);
+            }
             
-
-            currentHealth = currentHealth - damage;
-
-            enemyHealthBar.SetCurrentHealth(currentHealth);
             enemyAnimatorManager.PlayTargetAnimation(damageAnimation, true);
 
             if (currentHealth <= 0)

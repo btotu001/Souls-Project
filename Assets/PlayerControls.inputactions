@@ -261,6 +261,14 @@
                     "interactions": ""
                 },
                 {
+                    "name": "X",
+                    "type": "Button",
+                    "id": "6a03b1b4-007d-4f65-879a-9ab03d73e18f",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
                     "name": "Y",
                     "type": "Button",
                     "id": "eabd9655-cc84-44cc-8296-9521ae9237ff",
@@ -536,6 +544,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "RT",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "16b29909-061d-47d6-b15e-8b1c2d10786b",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "X",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e9180f32-3b96-47ad-9c31-b37f2afa4f13",
+                    "path": "<Keyboard>/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "X",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

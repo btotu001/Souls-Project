@@ -6,12 +6,15 @@ namespace TT
 {
     public class AttackState : State
     {
+        public RotateTowardsTargetState rotateTowardsTargetState;
         public CombatStanceState combatStanceState;
-
-        public EnemyAttackAction[] enemyAttacks;
+        public PursueTargetState pursueTargetState;
         public EnemyAttackAction currentAttack;
 
         bool willDoComboOnNextAttack = false;
+        public bool hasPerformedAttack = false;
+
+        /* old Tick
         public override State Tick(EnemyManager enemyManager, EnemyStats enemyStats, EnemyAnimatorManager enemyAnimatorManager)
         {
             //Select one of our many attacks based on attack scores
@@ -95,63 +98,55 @@ namespace TT
 
            return combatStanceState;
         }
-
-
-        #region Attacks
-
-
-        private void GetNewAttack(EnemyManager enemyManager)
+        */
+        public override State Tick(EnemyManager enemyManager, EnemyStats enemyStats, EnemyAnimatorManager enemyAnimatorManager)
         {
-            Vector3 targetDirection = enemyManager.currentTarget.transform.position - transform.position;
-            float viewableAngle = Vector3.Angle(targetDirection, transform.forward);
-            float distanceFromTarget = Vector3.Distance(enemyManager.currentTarget.transform.position, transform.position);
+            float distanceFromTarget = Vector3.Distance(enemyManager.currentTarget.transform.position, enemyManager.transform.position);
+            RotateTowardsTargetWhilstAttacking(enemyManager);
 
-            int maxScore = 0;
-            for (int i = 0; i < enemyAttacks.Length; i++)
+            if(distanceFromTarget > enemyManager.maximumAggroRadius)
             {
-                EnemyAttackAction enemyAttackAction = enemyAttacks[i];
-
-                if (distanceFromTarget <= enemyAttackAction.maximumDistanceNeededToAttack && distanceFromTarget >= enemyAttackAction.minimumDistanceNeededToAttack)
-                {
-                    if (viewableAngle <= enemyAttackAction.maximumAttackAngle && viewableAngle >= enemyAttackAction.minimumAttackAngle)
-                    {
-                        maxScore += enemyAttackAction.attackScore;
-                    }
-                }
+                return pursueTargetState;
             }
 
-            int randomValue = Random.Range(0, maxScore);
-            int temporaryScore = 0;
-
-            for (int i = 0; i < enemyAttacks.Length; i++)
+            if(willDoComboOnNextAttack && enemyManager.canDoCombo)
             {
-                EnemyAttackAction enemyAttackAction = enemyAttacks[i];
-
-                if (distanceFromTarget <= enemyAttackAction.maximumDistanceNeededToAttack && distanceFromTarget >= enemyAttackAction.minimumDistanceNeededToAttack)
-                {
-                    if (viewableAngle <= enemyAttackAction.maximumAttackAngle && viewableAngle >= enemyAttackAction.minimumAttackAngle)
-                    {
-                        if (currentAttack != null)
-                            return;
-
-                        temporaryScore += enemyAttackAction.attackScore;
-
-                        if (temporaryScore > randomValue)
-                        {
-                            currentAttack = enemyAttackAction;
-                        }
-                    }
-                }
+                AttackTargetWithCombo(enemyAnimatorManager, enemyManager);
+               
             }
 
+            if (!hasPerformedAttack)
+            {
+                AttackTarget(enemyAnimatorManager, enemyManager);
+                RollForComboChance(enemyManager);
+            }
+
+            if(willDoComboOnNextAttack && hasPerformedAttack)
+            {
+                return this; // goes back up to perform the combo
+            }
+
+            return rotateTowardsTargetState;
         }
 
-        #endregion
+        private void AttackTarget(EnemyAnimatorManager enemyAnimatorManager, EnemyManager enemyManager)
+        {
+            enemyAnimatorManager.PlayTargetAnimation(currentAttack.actionAnimation, true);
+            enemyManager.currentRecoveryTime = currentAttack.recoveryTime;
+            hasPerformedAttack = true;
+        }
 
-        private void HandleRotateTowardsTarget(EnemyManager enemyManager)
+        private void AttackTargetWithCombo(EnemyAnimatorManager enemyAnimatorManager, EnemyManager enemyManager)
+        {
+            willDoComboOnNextAttack = false;
+            enemyAnimatorManager.PlayTargetAnimation(currentAttack.actionAnimation, true);
+            currentAttack = null;
+        }
+
+        private void RotateTowardsTargetWhilstAttacking(EnemyManager enemyManager)
         {
             //Rotate manually
-            if (enemyManager.isPerformingAction)
+            if (enemyManager.canRotate && enemyManager.isInteracting)
             {
                 Vector3 direction = enemyManager.currentTarget.transform.position - transform.position;
                 direction.y = 0;
@@ -165,19 +160,7 @@ namespace TT
                 Quaternion targetRotation = Quaternion.LookRotation(direction);
                 enemyManager.transform.rotation = Quaternion.Slerp(enemyManager.transform.rotation, targetRotation, enemyManager.rotationSpeed);
             }
-            //Rotate with pathfinding (navMesh)
-            else
-            {
-                //check documentation for inversetransformdirection
-                Vector3 relativeDirection = transform.InverseTransformDirection(enemyManager.navMeshAgent.desiredVelocity);
-                Vector3 targetVelocity = enemyManager.enemyRigidbody.velocity;
-
-                enemyManager.navMeshAgent.enabled = true;
-                enemyManager.navMeshAgent.SetDestination(enemyManager.currentTarget.transform.position);
-                enemyManager.enemyRigidbody.velocity = targetVelocity;
-                enemyManager.transform.rotation = Quaternion.Slerp(enemyManager.transform.rotation, enemyManager.navMeshAgent.transform.rotation, enemyManager.rotationSpeed / Time.deltaTime);
-
-            }
+           
         }
 
         private void RollForComboChance(EnemyManager enemyManager)
@@ -186,7 +169,18 @@ namespace TT
 
             if(enemyManager.allowAIToPerformCombos && comboChance <= enemyManager.comboLikelyHood)
             {
-                willDoComboOnNextAttack = true;
+                if(currentAttack.comboAction != null)
+                {
+                    willDoComboOnNextAttack = true;
+                    currentAttack = currentAttack.comboAction;
+                }
+                else
+                {
+                    willDoComboOnNextAttack=false;
+                    currentAttack = null;
+                }
+
+                
             }
         }
     }

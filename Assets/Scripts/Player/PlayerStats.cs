@@ -82,10 +82,8 @@ namespace TT
             //if player is in rolling invulnerability for example
             if (playerManager.isInvulnerable)
                 return;
-            if (isDead)
-                return;
-
-            currentHealth = currentHealth - damage;
+            
+            base.TakeDamage(damage, damageAnimation = "Damage_1");
 
             healthBar.SetCurrentHealth(currentHealth);
             animatorHandler.PlayTargetAnimation(damageAnimation, true);

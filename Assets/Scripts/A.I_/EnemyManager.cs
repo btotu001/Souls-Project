@@ -23,7 +23,7 @@ namespace TT
       
        
         public float rotationSpeed = 15;
-        public float maximumAttackRange = 1.5f;
+        public float maximumAggroRadius = 1.5f;
 
         // public EnemyAttackAction[] enemyAttacks;
         // public EnemyAttackAction currentAttack;
@@ -63,8 +63,10 @@ namespace TT
             HandleRecoveryTimer();
             HandleStateMachine();
 
+            isRotatingWithRootMotion = enemyAnimatorManager.anim.GetBool("isRotatingWithRootMotion");
             isInteracting = enemyAnimatorManager.anim.GetBool("isInteracting");
             canDoCombo = enemyAnimatorManager.anim.GetBool("canDoCombo"); //when animatorManager enables, enable here too
+            canRotate = enemyAnimatorManager.anim.GetBool("canRotate");
             enemyAnimatorManager.anim.SetBool("isDead", enemyStats.isDead);
         }
 

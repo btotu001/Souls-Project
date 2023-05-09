@@ -9,9 +9,14 @@ namespace TT
     {
         WeaponSlotManager weaponSlotManager;
 
+        [Header("Quick Slots")]
         public SpellItem currentSpell;
         public WeaponItem rightWeapon;
         public WeaponItem leftWeapon;
+        public ConsumableItem currentConsumable;
+
+        [Header("Current Equipment/Skin")]
+        public TorsoEquipment currentSkinEquipment;
 
         public WeaponItem unarmedWeapon;
 

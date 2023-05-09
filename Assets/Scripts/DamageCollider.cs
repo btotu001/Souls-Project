@@ -56,6 +56,7 @@ namespace TT
                         if(playerStats != null)
                         {
                             playerStats.TakeDamage(Mathf.RoundToInt(physicalDamageAfterBlock), "BlockImpact");
+                            Debug.Log("blocked");
                             return; //return to not proceed to damage taking below
                         }
                     }
@@ -99,6 +100,14 @@ namespace TT
                 {
                     enemyStats.TakeDamage(currentWeaponDamage);
                 }
+            }
+
+            //for illusionary wall
+            if (collision.tag == "IllusionaryWall")
+            {
+                IllusionaryWall illusionaryWall = collision.GetComponent<IllusionaryWall>();
+
+                illusionaryWall.wallHasBeenHit = true;
             }
         }
     }
