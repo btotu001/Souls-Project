@@ -5,14 +5,14 @@ using UnityEngine;
 
 namespace TT
 {
-    public class PlayerStats : CharacterStats
+    public class PlayerStatsManager : CharacterStatsManager
     {
         PlayerManager playerManager;
         public HealthBar healthBar;
         public StaminaBar staminaBar;
         public FocusPointBar focusPointBar;
 
-        PlayerAnimatorManager animatorHandler;
+        PlayerAnimatorManager playerAnimatorManager;
 
         public float staminaRegenerationAmount = 1;
         public float staminaRegenerationTimer = 0;
@@ -22,7 +22,7 @@ namespace TT
             playerManager = GetComponent<PlayerManager>();
             //healthBar = FindObjectOfType<HealthBar>();
             staminaBar = FindObjectOfType<StaminaBar>();
-            animatorHandler = GetComponentInChildren<PlayerAnimatorManager>();
+            playerAnimatorManager = GetComponent<PlayerAnimatorManager>();
         }
 
         private void Start()
@@ -86,12 +86,12 @@ namespace TT
             base.TakeDamage(damage, damageAnimation = "Damage_1");
 
             healthBar.SetCurrentHealth(currentHealth);
-            animatorHandler.PlayTargetAnimation(damageAnimation, true);
+            playerAnimatorManager.PlayTargetAnimation(damageAnimation, true);
 
             if (currentHealth <= 0)
             {
                 currentHealth = 0;
-                animatorHandler.PlayTargetAnimation("Death_1", true);
+                playerAnimatorManager.PlayTargetAnimation("Death_1", true);
                 // HANDLE PLAYER DEATH
                 isDead = true;
             }

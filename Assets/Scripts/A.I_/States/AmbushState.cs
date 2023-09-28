@@ -31,7 +31,7 @@ namespace TT
             //for every collider that overlap detects (search playermanager
             for(int i = 0; i < colliders.Length; i++)
             {
-                CharacterStats characterStats = colliders[i].transform.GetComponent<CharacterStats>();
+                CharacterStatsManager characterStats = colliders[i].transform.GetComponent<CharacterStatsManager>();
 
                 //if found characterStats in collider
                 if(characterStats != null)

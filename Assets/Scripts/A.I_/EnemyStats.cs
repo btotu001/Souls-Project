@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace TT
 {
-    public class EnemyStats : CharacterStats
+    public class EnemyStats : CharacterStatsManager
     {
        
         EnemyAnimatorManager enemyAnimatorManager;

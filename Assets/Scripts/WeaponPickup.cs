@@ -21,12 +21,12 @@ namespace TT
 
         private void PickupItem(PlayerManager playerManager)
         {
-            PlayerInventory playerInventory;
-            PlayerLocomotion playerLocomotion;
+            PlayerInventoryManager playerInventory;
+            PlayerLocomotionManager playerLocomotion;
             PlayerAnimatorManager animatorHandler; 
 
-            playerInventory = playerManager.GetComponent<PlayerInventory>();
-            playerLocomotion = playerManager.GetComponent<PlayerLocomotion>();
+            playerInventory = playerManager.GetComponent<PlayerInventoryManager>();
+            playerLocomotion = playerManager.GetComponent<PlayerLocomotionManager>();
             animatorHandler = playerManager.GetComponentInChildren<PlayerAnimatorManager>();
 
             playerLocomotion.rigidbody.velocity = Vector3.zero; // Stops the player from moving whilst picking up item

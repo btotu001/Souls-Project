@@ -12,7 +12,7 @@ namespace TT
         private void Awake()
         {
             //anim derived from animatorManager
-            anim = GetComponent<Animator>();
+            animator = GetComponent<Animator>();
             enemyManager = GetComponentInParent<EnemyManager>();
             enemyStats = GetComponentInParent<EnemyStats>();
         }
@@ -25,31 +25,31 @@ namespace TT
 
         public void CanRotate()
         {
-            anim.SetBool("canRotate", true);
+            animator.SetBool("canRotate", true);
         }
 
         public void StopRotation()
         {
-            anim.SetBool("canRotate", false);
+            animator.SetBool("canRotate", false);
         }
 
         public void EnableCombo()
         {
-            anim.SetBool("canDoCombo", true);
+            animator.SetBool("canDoCombo", true);
         }
         public void DisableCombo()
         {
-            anim.SetBool("canDoCombo", false);
+            animator.SetBool("canDoCombo", false);
         }
 
         public void EnableIsInvulnerable()
         {
-            anim.SetBool("isInvulnerable", true);
+            animator.SetBool("isInvulnerable", true);
         }
 
         public void DisableIsVulnerable()
         {
-            anim.SetBool("isInvulnerable", false);
+            animator.SetBool("isInvulnerable", false);
         }
 
         
@@ -77,7 +77,7 @@ namespace TT
         {
             //if multiplayer -> Scan for every player in the scene, award them souls
 
-            PlayerStats playerStats = FindObjectOfType<PlayerStats>();
+            PlayerStatsManager playerStats = FindObjectOfType<PlayerStatsManager>();
             SoulCountBar soulCountBar = FindObjectOfType<SoulCountBar>();
 
             if (playerStats != null)
@@ -97,7 +97,7 @@ namespace TT
         {
             float delta = Time.deltaTime;
             enemyManager.enemyRigidbody.drag = 0;
-            Vector3 deltaPosition = anim.deltaPosition;
+            Vector3 deltaPosition = animator.deltaPosition;
             deltaPosition.y = 0;
             Vector3 velocity = deltaPosition / delta;
             enemyManager.enemyRigidbody.velocity = velocity;
@@ -105,7 +105,7 @@ namespace TT
             if (enemyManager.isRotatingWithRootMotion)
             {
                 // *= so it rotates over time
-                enemyManager.transform.rotation *= anim.deltaRotation; 
+                enemyManager.transform.rotation *= animator.deltaRotation; 
             }
         }
     }

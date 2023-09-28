@@ -13,7 +13,7 @@ namespace TT
         EnemyStats enemyStats;
 
         public State currentState;
-        public CharacterStats currentTarget;
+        public CharacterStatsManager currentTarget;
 
         public NavMeshAgent navMeshAgent;
         public Rigidbody enemyRigidbody;
@@ -63,11 +63,11 @@ namespace TT
             HandleRecoveryTimer();
             HandleStateMachine();
 
-            isRotatingWithRootMotion = enemyAnimatorManager.anim.GetBool("isRotatingWithRootMotion");
-            isInteracting = enemyAnimatorManager.anim.GetBool("isInteracting");
-            canDoCombo = enemyAnimatorManager.anim.GetBool("canDoCombo"); //when animatorManager enables, enable here too
-            canRotate = enemyAnimatorManager.anim.GetBool("canRotate");
-            enemyAnimatorManager.anim.SetBool("isDead", enemyStats.isDead);
+            isRotatingWithRootMotion = enemyAnimatorManager.animator.GetBool("isRotatingWithRootMotion");
+            isInteracting = enemyAnimatorManager.animator.GetBool("isInteracting");
+            canDoCombo = enemyAnimatorManager.animator.GetBool("canDoCombo"); //when animatorManager enables, enable here too
+            canRotate = enemyAnimatorManager.animator.GetBool("canRotate");
+            enemyAnimatorManager.animator.SetBool("isDead", enemyStats.isDead);
         }
 
         //rigidbody movement better on fixed/late update

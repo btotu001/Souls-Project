@@ -18,7 +18,7 @@ namespace TT
         [Header("Recovery FX")]
         public GameObject recoveryFX;
 
-        public override void AttemptToConsumeItem(PlayerAnimatorManager playerAnimatorManager, WeaponSlotManager weaponSlotManager, PlayerEffectsManager playerEffectsManager)
+        public override void AttemptToConsumeItem(PlayerAnimatorManager playerAnimatorManager, PlayerWeaponSlotManager weaponSlotManager, PlayerEffectsManager playerEffectsManager)
         {
             base.AttemptToConsumeItem(playerAnimatorManager, weaponSlotManager, playerEffectsManager);
             //instatniate flask in hand and play drink anim

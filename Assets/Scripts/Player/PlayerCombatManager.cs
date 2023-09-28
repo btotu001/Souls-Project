@@ -5,16 +5,16 @@ using UnityEngine;
 
 namespace TT
 {
-    public class PlayerAttacker : MonoBehaviour
+    public class PlayerCombatManager : MonoBehaviour
     {
-        CameraHandler cameraHandler;
-        PlayerAnimatorManager animatorHandler;
-        PlayerEquipmentManager playerEquipmentManager;
-        PlayerManager playerManager;
-        PlayerStats playerStats;
-        PlayerInventory playerInventory;
         InputHandler inputHandler;
-        WeaponSlotManager weaponSlotManager;
+        CameraHandler cameraHandler;
+        PlayerManager playerManager;
+        PlayerAnimatorManager playernAimatorHandler;
+        PlayerEquipmentManager playerEquipmentManager;
+        PlayerStatsManager playerStatsManager;
+        PlayerInventoryManager playerInventoryManager;
+        PlayerWeaponSlotManager playerWeaponSlotManager;
         public string lastAttack;
 
         LayerMask backStabLayer = 1 << 13; //searches layer 13, wich is the backstab layer in unity
@@ -22,35 +22,35 @@ namespace TT
 
         private void Awake()
         {
+            inputHandler = GetComponent<InputHandler>();
             cameraHandler = FindObjectOfType<CameraHandler>();
-            animatorHandler = GetComponent<PlayerAnimatorManager>();
+            playernAimatorHandler = GetComponent<PlayerAnimatorManager>();
             playerEquipmentManager = GetComponent<PlayerEquipmentManager>();
-            playerManager = GetComponentInParent<PlayerManager>();
-            playerStats = GetComponentInParent<PlayerStats>();
-            playerInventory = GetComponentInParent<PlayerInventory>();
-            weaponSlotManager = GetComponent<WeaponSlotManager>();  
-            inputHandler = GetComponentInParent<InputHandler>();
+            playerManager = GetComponent<PlayerManager>();
+            playerStatsManager = GetComponent<PlayerStatsManager>();
+            playerInventoryManager = GetComponent<PlayerInventoryManager>();
+            playerWeaponSlotManager = GetComponent<PlayerWeaponSlotManager>();  
         }
 
         public void HandleWeaponCombo(WeaponItem weapon)
         {
             //Check if we have stamina, if we do not , return
-            if (playerStats.currentStamina <= 0)
+            if (playerStatsManager.currentStamina <= 0)
                 return;
 
             if (inputHandler.comboFlag)
             {
 
-                animatorHandler.anim.SetBool("canDoCombo", false);
+                playernAimatorHandler.animator.SetBool("canDoCombo", false);
 
 
                 if (lastAttack == weapon.OH_Light_Attack_1)
                 {
-                    animatorHandler.PlayTargetAnimation(weapon.OH_Light_Attack_2, true);
+                    playernAimatorHandler.PlayTargetAnimation(weapon.OH_Light_Attack_2, true);
                 }
                 else if(lastAttack == weapon.TH_Light_Attack_1)
                 {
-                    animatorHandler.PlayTargetAnimation(weapon.TH_Light_Attack_2, true);
+                    playernAimatorHandler.PlayTargetAnimation(weapon.TH_Light_Attack_2, true);
                 }
             }
         }
@@ -58,19 +58,19 @@ namespace TT
         public void HandleLightAttack(WeaponItem weapon)
         {
             //Check if we have stamina, if we do not , return
-            if (playerStats.currentStamina <= 0)
+            if (playerStatsManager.currentStamina <= 0)
                 return;
 
-            weaponSlotManager.attackingWeapon = weapon;
+            playerWeaponSlotManager.attackingWeapon = weapon;
 
             if (inputHandler.twoHandFlag)
             {
-                animatorHandler.PlayTargetAnimation(weapon.TH_Light_Attack_1, true);
+                playernAimatorHandler.PlayTargetAnimation(weapon.TH_Light_Attack_1, true);
                 lastAttack = weapon.TH_Light_Attack_1;
             }
             else
             {
-                animatorHandler.PlayTargetAnimation(weapon.OH_Light_Attack_1, true);
+                playernAimatorHandler.PlayTargetAnimation(weapon.OH_Light_Attack_1, true);
                 lastAttack = weapon.OH_Light_Attack_1;
             }
         }
@@ -78,10 +78,10 @@ namespace TT
         public void HandleHeavyAttack(WeaponItem weapon)
         {
             //Check if we have stamina, if we do not , return
-            if (playerStats.currentStamina <= 0)
+            if (playerStatsManager.currentStamina <= 0)
                 return;
 
-            weaponSlotManager.attackingWeapon = weapon;
+            playerWeaponSlotManager.attackingWeapon = weapon;
 
             if (inputHandler.twoHandFlag)
             {
@@ -90,7 +90,7 @@ namespace TT
             else
             {
               
-                animatorHandler.PlayTargetAnimation(weapon.OH_Heavy_Attack_1, true);
+                playernAimatorHandler.PlayTargetAnimation(weapon.OH_Heavy_Attack_1, true);
                 lastAttack = weapon.OH_Heavy_Attack_1;
             }
         }
@@ -99,16 +99,16 @@ namespace TT
         public void HandleRBAction()
         {
             //if melee weapon equipped
-            if (playerInventory.rightWeapon.isMeleeWeapon)
+            if (playerInventoryManager.rightWeapon.isMeleeWeapon)
             {
                 //Handle melee action
                 PerformRBMeleeAction();
             }
             //if spell caster equipped (magick, faith, pyro)
-            else if (playerInventory.rightWeapon.isSpellCaster || playerInventory.rightWeapon.isFaithCaster || playerInventory.rightWeapon.isPyroCaster)
+            else if (playerInventoryManager.rightWeapon.isSpellCaster || playerInventoryManager.rightWeapon.isFaithCaster || playerInventoryManager.rightWeapon.isPyroCaster)
             {
                 //Handle spell action
-                PerformRBMagicAction(playerInventory.rightWeapon);
+                PerformRBMagicAction(playerInventoryManager.rightWeapon);
             }
            
            
@@ -121,13 +121,13 @@ namespace TT
 
         public void HandleLTAction()
         {
-            if (playerInventory.leftWeapon.isShieldWeapon)
+            if (playerInventoryManager.leftWeapon.isShieldWeapon)
             {
                 //perform shield weapon art
                 PerformLTWeaponArt(inputHandler.twoHandFlag);
 
             }
-            else if (playerInventory.leftWeapon.isMeleeWeapon)
+            else if (playerInventoryManager.leftWeapon.isMeleeWeapon)
             {
                 //do a light attack
             }
@@ -142,7 +142,7 @@ namespace TT
             if (playerManager.canDoCombo)
             {
                 inputHandler.comboFlag = true;
-                HandleWeaponCombo(playerInventory.rightWeapon);
+                HandleWeaponCombo(playerInventoryManager.rightWeapon);
                 inputHandler.comboFlag = false;
             }
             else
@@ -157,8 +157,8 @@ namespace TT
                     return;
                 }
 
-                animatorHandler.anim.SetBool("isUsingRightHand", true);
-                HandleLightAttack(playerInventory.rightWeapon);
+                playernAimatorHandler.animator.SetBool("isUsingRightHand", true);
+                HandleLightAttack(playerInventoryManager.rightWeapon);
             }
         }
 
@@ -173,34 +173,34 @@ namespace TT
 
             if (weapon.isFaithCaster)
             {
-                if(playerInventory.currentSpell != null && playerInventory.currentSpell.isFaithSpell)
+                if(playerInventoryManager.currentSpell != null && playerInventoryManager.currentSpell.isFaithSpell)
                 {
                     //CHeck for fp
-                    if(playerStats.currentFocusPoints >= playerInventory.currentSpell.focusPointCost)
+                    if(playerStatsManager.currentFocusPoints >= playerInventoryManager.currentSpell.focusPointCost)
                     {
                         //attempt to cast spell
-                        playerInventory.currentSpell.AttempToCastSpell(animatorHandler, playerStats, weaponSlotManager);
+                        playerInventoryManager.currentSpell.AttempToCastSpell(playernAimatorHandler, playerStatsManager, playerWeaponSlotManager);
                     }
                     else
                     {
-                        animatorHandler.PlayTargetAnimation("Shrugging", true);
+                        playernAimatorHandler.PlayTargetAnimation("Shrugging", true);
                     }
                 }
             }
 
             else if (weapon.isPyroCaster)
             {
-                if (playerInventory.currentSpell != null && playerInventory.currentSpell.isPyroSpell)
+                if (playerInventoryManager.currentSpell != null && playerInventoryManager.currentSpell.isPyroSpell)
                 {
                     //CHeck for fp
-                    if (playerStats.currentFocusPoints >= playerInventory.currentSpell.focusPointCost)
+                    if (playerStatsManager.currentFocusPoints >= playerInventoryManager.currentSpell.focusPointCost)
                     {
                         //attempt to cast spell
-                        playerInventory.currentSpell.AttempToCastSpell(animatorHandler, playerStats, weaponSlotManager);
+                        playerInventoryManager.currentSpell.AttempToCastSpell(playernAimatorHandler, playerStatsManager, playerWeaponSlotManager);
                     }
                     else
                     {     
-                        animatorHandler.PlayTargetAnimation("Shrugging", true);
+                        playernAimatorHandler.PlayTargetAnimation("Shrugging", true);
                     }
                 }
             }
@@ -209,8 +209,8 @@ namespace TT
 
         private void SuccessfullyCastSpell()
         {
-            playerInventory.currentSpell.SuccessfullyCastSpell(animatorHandler,playerStats, cameraHandler, weaponSlotManager);
-            animatorHandler.anim.SetBool("isFiringSpell", true);
+            playerInventoryManager.currentSpell.SuccessfullyCastSpell(playernAimatorHandler,playerStatsManager, cameraHandler, playerWeaponSlotManager);
+            playernAimatorHandler.animator.SetBool("isFiringSpell", true);
         }
 
         private void PerformLTWeaponArt(bool isTwoHanding)
@@ -227,7 +227,7 @@ namespace TT
             else
             {
                 //else perform weapon art for left weapon
-                animatorHandler.PlayTargetAnimation(playerInventory.leftWeapon.weapon_art, true);
+                playernAimatorHandler.PlayTargetAnimation(playerInventoryManager.leftWeapon.weapon_art, true);
 
             }
         }
@@ -243,7 +243,7 @@ namespace TT
             if (playerManager.isBlocking)
                 return;
 
-            animatorHandler.PlayTargetAnimation("BlockStart", false, true);
+            playernAimatorHandler.PlayTargetAnimation("BlockStart", false, true);
             playerEquipmentManager.OpenBlockingCollider();
             playerManager.isBlocking = true; //goes to false only after letting off LB
 
@@ -253,7 +253,7 @@ namespace TT
         public void AttemptBackStabOrRiposte()
         {
             //Check if we have stamina, if we do not , return
-            if (playerStats.currentStamina <= 0)
+            if (playerStatsManager.currentStamina <= 0)
                 return;
 
             RaycastHit hit;
@@ -262,7 +262,7 @@ namespace TT
             if(Physics.Raycast(inputHandler.criticalAttackRayCastStartPoint.position, transform.TransformDirection(Vector3.forward), out hit, 0.5f, backStabLayer))
             {
                 CharacterManager enemyCharacterManager = hit.transform.gameObject.GetComponentInParent<CharacterManager>();
-                DamageCollider rightWeapon = weaponSlotManager.rightHandDamageCollider; //
+                DamageCollider rightWeapon = playerWeaponSlotManager.rightHandDamageCollider; //
 
                 if(enemyCharacterManager != null)
                 {
@@ -279,11 +279,11 @@ namespace TT
                     Quaternion targetRotation = Quaternion.Slerp(playerManager.transform.rotation, tr, 500 * Time.deltaTime);
                      playerManager.transform.rotation = targetRotation;
 
-                    int criticalDamage = playerInventory.rightWeapon.criticalDamageMultiplier * rightWeapon.currentWeaponDamage;
+                    int criticalDamage = playerInventoryManager.rightWeapon.criticalDamageMultiplier * rightWeapon.currentWeaponDamage;
                     enemyCharacterManager.pendingCriticalDamage = criticalDamage;
 
                     //play animation
-                    animatorHandler.PlayTargetAnimation("BackStab", true);
+                    playernAimatorHandler.PlayTargetAnimation("BackStab", true);
                     //make enemy play animation
                     enemyCharacterManager.GetComponentInChildren<AnimatorManager>().PlayTargetAnimation("BackStabbed", true);
                     //do damage (animation event)
@@ -294,7 +294,7 @@ namespace TT
             {
                 //(For multiplayer) check team I.D
                 CharacterManager enemyCharacterManager = hit.transform.gameObject.GetComponentInParent<CharacterManager>();
-                DamageCollider rightWeapon = weaponSlotManager.rightHandDamageCollider;
+                DamageCollider rightWeapon = playerWeaponSlotManager.rightHandDamageCollider;
 
                 if(enemyCharacterManager != null && enemyCharacterManager.canBeRiposted)
                 {
@@ -308,10 +308,10 @@ namespace TT
                     Quaternion targetRotation = Quaternion.Slerp(playerManager.transform.rotation, tr, 500 * Time.deltaTime);
                     playerManager.transform.rotation = targetRotation;
 
-                    int criticalDamage = playerInventory.rightWeapon.criticalDamageMultiplier * rightWeapon.currentWeaponDamage;
+                    int criticalDamage = playerInventoryManager.rightWeapon.criticalDamageMultiplier * rightWeapon.currentWeaponDamage;
                     enemyCharacterManager.pendingCriticalDamage = criticalDamage;
 
-                    animatorHandler.PlayTargetAnimation("RiposteStab", true);
+                    playernAimatorHandler.PlayTargetAnimation("RiposteStab", true);
                     Debug.Log("RIPOSTED");
                     enemyCharacterManager.GetComponentInChildren<AnimatorManager>().PlayTargetAnimation("RiposteStabbed", true);
                 }

@@ -12,7 +12,7 @@ namespace TT
 
         bool hasCollided = false;
 
-        CharacterStats spellTarget;
+        CharacterStatsManager spellTarget;
         Rigidbody rigidBody;
 
         Vector3 impactNormal; //Used to rotate the impact particles
@@ -46,7 +46,7 @@ namespace TT
         {
             if (!hasCollided)
             {
-                spellTarget = other.transform.GetComponent<CharacterStats>(); //character that collides with this
+                spellTarget = other.transform.GetComponent<CharacterStatsManager>(); //character that collides with this
 
                 if(spellTarget != null)
                 {

@@ -8,11 +8,11 @@ namespace TT
     //Animator handler for player
     public class PlayerAnimatorManager : AnimatorManager
     {
-        PlayerManager playerManager;
-        PlayerStats playerStats;
-       
         InputHandler inputHandler;
-        PlayerLocomotion playerLocomotion;
+        PlayerManager playerManager;
+        PlayerStatsManager playerStatsManager;
+       
+        PlayerLocomotionManager playerLocomotionManager;
         int vertical;
         int horizontal;
         
@@ -20,11 +20,11 @@ namespace TT
         //initializing the parameters
         public void Initialize()
         {
-            playerManager = GetComponentInParent<PlayerManager>();
-            playerStats = GetComponentInParent<PlayerStats>();
-            anim = GetComponent<Animator>();
             inputHandler = GetComponentInParent<InputHandler>();
-            playerLocomotion = GetComponentInParent<PlayerLocomotion>();
+            animator = GetComponentInChildren<Animator>();
+            playerManager = GetComponentInParent<PlayerManager>();
+            playerStatsManager = GetComponentInParent<PlayerStatsManager>();
+            playerLocomotionManager = GetComponentInParent<PlayerLocomotionManager>();
             vertical = Animator.StringToHash("Vertical");
             horizontal = Animator.StringToHash("Horizontal");
         }
@@ -88,39 +88,39 @@ namespace TT
                 h = horizontalMovement;
             }
 
-            anim.SetFloat(vertical, v, 0.1f, Time.deltaTime);
-            anim.SetFloat(horizontal, h, 0.1f, Time.deltaTime);
+            animator.SetFloat(vertical, v, 0.1f, Time.deltaTime);
+            animator.SetFloat(horizontal, h, 0.1f, Time.deltaTime);
         }
 
      
 
         public void CanRotate()
         {
-            anim.SetBool("canRotate", true);
+            animator.SetBool("canRotate", true);
         }
 
         public void StopRotation()
         {
-            anim.SetBool("canRotate", false);
+            animator.SetBool("canRotate", false);
         }
 
         public void EnableCombo()
         {
-            anim.SetBool("canDoCombo", true);
+            animator.SetBool("canDoCombo", true);
         }
         public void DisableCombo()
         {
-            anim.SetBool("canDoCombo", false);
+            animator.SetBool("canDoCombo", false);
         }
 
         public void EnableIsInvulnerable()
         {
-            anim.SetBool("isInvulnerable", true);
+            animator.SetBool("isInvulnerable", true);
         }
 
         public void DisableIsVulnerable()
         {
-            anim.SetBool("isInvulnerable", false);
+            animator.SetBool("isInvulnerable", false);
         }
 
         public void EnableIsParrying()
@@ -145,20 +145,20 @@ namespace TT
 
         public override void TakeCriticalDamageAnimationEvent()
         {
-           playerStats.TakeDamageNoAnimation(playerManager.pendingCriticalDamage);
+           playerStatsManager.TakeDamageNoAnimation(playerManager.pendingCriticalDamage);
             playerManager.pendingCriticalDamage = 0; //reset pending dmg
         }
 
         //disables players collisions
         public void DisableCollision()
         {
-            playerLocomotion.characterCollider.enabled = false;
-            playerLocomotion.characterCollisionBlockerCollider.enabled = false;
+            playerLocomotionManager.characterCollider.enabled = false;
+            playerLocomotionManager.characterCollisionBlockerCollider.enabled = false;
         }
         public void EnableCollision()
         {
-            playerLocomotion.characterCollider.enabled = true;
-            playerLocomotion.characterCollisionBlockerCollider.enabled = true;
+            playerLocomotionManager.characterCollider.enabled = true;
+            playerLocomotionManager.characterCollisionBlockerCollider.enabled = true;
         }
 
         private void OnAnimatorMove()
@@ -167,11 +167,11 @@ namespace TT
                 return;
 
             float delta = Time.deltaTime;
-            playerLocomotion.rigidbody.drag = 0;
-            Vector3 deltaPosition = anim.deltaPosition;
+            playerLocomotionManager.rigidbody.drag = 0;
+            Vector3 deltaPosition = animator.deltaPosition;
             deltaPosition.y = 0;
             Vector3 velocity = deltaPosition / delta;
-            playerLocomotion.rigidbody.velocity = velocity;
+            playerLocomotionManager.rigidbody.velocity = velocity;
         }
 
     }

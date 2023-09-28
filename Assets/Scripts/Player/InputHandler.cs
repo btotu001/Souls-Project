@@ -45,17 +45,16 @@ namespace TT
         public Transform criticalAttackRayCastStartPoint;
 
         PlayerControls inputActions;
-        PlayerAttacker playerAttacker;
-        PlayerInventory playerInventory;
+        PlayerCombatManager playerCombatManager;
+        PlayerInventoryManager playerInventoryManager;
         PlayerManager playerManager;
         PlayerAnimatorManager playerAnimatorManager;
         PlayerEffectsManager playerEffectsManager;
-        PlayerStats playerStats;
+        PlayerStatsManager playerStatsManager;
         BlockingCollider blockingCollider;
-        WeaponSlotManager weaponSlotManager;
+        PlayerWeaponSlotManager weaponSlotManager;
         UIManager uiManager;
         CameraHandler cameraHandler;
-        PlayerAnimatorManager animatorHandler;
 
         Vector2 movementInput;
         Vector2 cameraInput;
@@ -63,17 +62,17 @@ namespace TT
 
         private void Awake()
         {
-            playerAttacker = GetComponentInChildren<PlayerAttacker>();
-            playerInventory = GetComponent<PlayerInventory>();
+            playerCombatManager = GetComponent<PlayerCombatManager>();
+            playerInventoryManager = GetComponent<PlayerInventoryManager>();
             playerManager = GetComponent<PlayerManager>();
-            playerAnimatorManager = GetComponentInChildren<PlayerAnimatorManager>();
-            playerEffectsManager = GetComponentInChildren<PlayerEffectsManager>();
-            playerStats = GetComponent<PlayerStats>();
-            weaponSlotManager = GetComponentInChildren<WeaponSlotManager>();
+            playerAnimatorManager = GetComponent<PlayerAnimatorManager>();
+            playerEffectsManager = GetComponent<PlayerEffectsManager>();
+            playerStatsManager = GetComponent<PlayerStatsManager>();
+            weaponSlotManager = GetComponent<PlayerWeaponSlotManager>();
             blockingCollider = GetComponentInChildren<BlockingCollider>();
             uiManager = FindObjectOfType<UIManager>();
             cameraHandler = FindObjectOfType<CameraHandler>();
-            animatorHandler = GetComponentInChildren<PlayerAnimatorManager>();
+            playerAnimatorManager = GetComponent<PlayerAnimatorManager>();
         }
 
 
@@ -151,13 +150,13 @@ namespace TT
             {
                 rollInputTimer += delta;
 
-                if(playerStats.currentStamina <= 0)
+                if(playerStatsManager.currentStamina <= 0)
                 {
                     b_Input = false;
                     sprintFlag = false;
                 }
 
-                if(moveAmount > 0.5f && playerStats.currentStamina > 0)
+                if(moveAmount > 0.5f && playerStatsManager.currentStamina > 0)
                 {
                     sprintFlag = true;
                 }
@@ -183,7 +182,7 @@ namespace TT
             //RB Input handles the Right hand Weapon's light weapon
             if (rb_Input)
             {
-                playerAttacker.HandleRBAction();
+                playerCombatManager.HandleRBAction();
             }
 
             if (rt_Input)
@@ -197,14 +196,14 @@ namespace TT
                 {
                     return;
                 }
-                playerAttacker.HandleHeavyAttack(playerInventory.rightWeapon);
+                playerCombatManager.HandleHeavyAttack(playerInventoryManager.rightWeapon);
             }
 
             if (lb_Input)
             {
                 //Do a block
                
-                playerAttacker.HandleLBAction();
+                playerCombatManager.HandleLBAction();
             }
             else
             {
@@ -230,7 +229,7 @@ namespace TT
                 {
                     //else handle light attack if melee weapon
                     //handle weapon art if shield
-                    playerAttacker.HandleLTAction();
+                    playerCombatManager.HandleLTAction();
 
                 }
 
@@ -244,11 +243,11 @@ namespace TT
             //when pressing right quickslot, change right hand weapon
             if (d_Pad_Right)
             {
-                playerInventory.ChangeRightWeapon();
+                playerInventoryManager.ChangeRightWeapon();
             }
             else if (d_Pad_Left)
             {
-                playerInventory.ChangeLeftWeapon();
+                playerInventoryManager.ChangeLeftWeapon();
             }
 
         }
@@ -337,14 +336,14 @@ namespace TT
                 if (twoHandFlag)
                 {
                     //Enable two handing
-                    weaponSlotManager.LoadWeaponOnSlot(playerInventory.rightWeapon, false);
+                    weaponSlotManager.LoadWeaponOnSlot(playerInventoryManager.rightWeapon, false);
 
                 }
                 else
                 {
                     //Disable two handing
-                    weaponSlotManager.LoadWeaponOnSlot(playerInventory.rightWeapon, false);
-                    weaponSlotManager.LoadWeaponOnSlot(playerInventory.leftWeapon, true);
+                    weaponSlotManager.LoadWeaponOnSlot(playerInventoryManager.rightWeapon, false);
+                    weaponSlotManager.LoadWeaponOnSlot(playerInventoryManager.leftWeapon, true);
                 }
             }
         }
@@ -354,7 +353,7 @@ namespace TT
             if (critical_Attack_Input)
             {
                 critical_Attack_Input = false;
-                playerAttacker.AttemptBackStabOrRiposte();
+                playerCombatManager.AttemptBackStabOrRiposte();
             }
         }
 
@@ -364,7 +363,7 @@ namespace TT
             {
                 x_Input = false;
                 //Use current consumable
-                playerInventory.currentConsumable.AttemptToConsumeItem(playerAnimatorManager, weaponSlotManager, playerEffectsManager);
+                playerInventoryManager.currentConsumable.AttemptToConsumeItem(playerAnimatorManager, weaponSlotManager, playerEffectsManager);
             }
         }
     }

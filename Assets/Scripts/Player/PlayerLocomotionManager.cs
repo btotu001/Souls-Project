@@ -5,11 +5,11 @@ using UnityEngine;
 
 namespace TT
 {
-    public class PlayerLocomotion : MonoBehaviour
+    public class PlayerLocomotionManager : MonoBehaviour
     {
         CameraHandler cameraHandler;
         PlayerManager playerManager;
-        PlayerStats playerStats;
+        PlayerStatsManager playerStatsManager;
         Transform cameraObject;
         InputHandler inputHandler;
         public Vector3 moveDirection;
@@ -19,7 +19,7 @@ namespace TT
 
         //for animations
         [HideInInspector]
-        public PlayerAnimatorManager animatorHandler;
+        public PlayerAnimatorManager playerAnimatorManager;
 
 
         public new Rigidbody rigidbody;
@@ -60,13 +60,12 @@ namespace TT
         {
             cameraHandler = FindObjectOfType<CameraHandler>();
             playerManager = GetComponent<PlayerManager>();
-            playerStats = GetComponent<PlayerStats>();
+            playerStatsManager = GetComponent<PlayerStatsManager>();
 
             rigidbody = GetComponent<Rigidbody>();
             inputHandler = GetComponent<InputHandler>();
 
-            //for animations, InChildren because we put it in player model
-            animatorHandler = GetComponentInChildren<PlayerAnimatorManager>();
+            playerAnimatorManager = GetComponent<PlayerAnimatorManager>();
         }
 
         void Start()
@@ -75,7 +74,7 @@ namespace TT
             cameraObject = Camera.main.transform;
             myTransform = transform;
 
-            animatorHandler.Initialize();
+            playerAnimatorManager.Initialize();
 
             playerManager.isGrounded = true;
             //layers that are ignored for groundchechikng
@@ -93,7 +92,7 @@ namespace TT
         public void HandleRotation(float delta)
         {
             //animation update
-            if (animatorHandler.canRotate)
+            if (playerAnimatorManager.canRotate)
             {
                 //if we are locked on
                 if (inputHandler.lockOnFlag)
@@ -179,7 +178,7 @@ namespace TT
                 speed = sprintSpeed;
                 playerManager.isSprinting = true;
                 moveDirection *= speed;
-                playerStats.DecreaseStamina(sprintStaminaCost);
+                playerStatsManager.DecreaseStamina(sprintStaminaCost);
             }
             else
             {
@@ -203,12 +202,12 @@ namespace TT
 
             if (inputHandler.lockOnFlag && inputHandler.sprintFlag == false)
             {
-                animatorHandler.UpdateAnimatorValues(inputHandler.vertical, inputHandler.horizontal, playerManager.isSprinting);
+                playerAnimatorManager.UpdateAnimatorValues(inputHandler.vertical, inputHandler.horizontal, playerManager.isSprinting);
             }
             else
             {
            
-                animatorHandler.UpdateAnimatorValues(inputHandler.moveAmount, 0, playerManager.isSprinting);
+                playerAnimatorManager.UpdateAnimatorValues(inputHandler.moveAmount, 0, playerManager.isSprinting);
 
             }
 
@@ -217,40 +216,40 @@ namespace TT
 
         public void HandleRollingAndSprinting(float delta)
         {
-            if (animatorHandler.anim.GetBool("isInteracting"))
+            if (playerAnimatorManager.animator.GetBool("isInteracting"))
                 return;
 
             //Check if we have stamina, if we do not , return
-            if (playerStats.currentStamina <= 0)
+            if (playerStatsManager.currentStamina <= 0)
                 return;
 
 
             if(inputHandler.rollFlag)
             {
-                animatorHandler.canRotate = false;//******************************************************
+                playerAnimatorManager.canRotate = false;//******************************************************
                 moveDirection = cameraObject.forward * inputHandler.vertical;
                 moveDirection += cameraObject.right * inputHandler.horizontal;
 
                 if(inputHandler.moveAmount > 0)
                 {
-                    animatorHandler.PlayTargetAnimation("Roll2", true);
+                    playerAnimatorManager.PlayTargetAnimation("Roll2", true);
                     moveDirection.y = 0;
                     Quaternion rollRotation = Quaternion.LookRotation(moveDirection);
                     myTransform.rotation = rollRotation;
-                    playerStats.DecreaseStamina(rollStaminaCost);
+                    playerStatsManager.DecreaseStamina(rollStaminaCost);
                 }
                 else
                 {
                     //not working hmm...
-                    animatorHandler.PlayTargetAnimation("StepBack2", true);
-                    playerStats.DecreaseStamina(backstepStaminaCost);
+                    playerAnimatorManager.PlayTargetAnimation("StepBack2", true);
+                    playerStatsManager.DecreaseStamina(backstepStaminaCost);
                 }
 
             }
 
             else
             {
-                animatorHandler.canRotate = true;//**********************************************************
+                playerAnimatorManager.canRotate = true;//**********************************************************
             }
         
         }
@@ -292,12 +291,12 @@ namespace TT
                     if (inAirTimer > 0.5f)
                     {
                         Debug.Log("You were in the air for " + inAirTimer);
-                        animatorHandler.PlayTargetAnimation("Land", true);
+                        playerAnimatorManager.PlayTargetAnimation("Land", true);
                         inAirTimer = 0;
                     }
                     else
                     {
-                        animatorHandler.PlayTargetAnimation("Empty", false);
+                        playerAnimatorManager.PlayTargetAnimation("Empty", false);
                         inAirTimer = 0;
                     }
 
@@ -315,7 +314,7 @@ namespace TT
                 {
                     if(playerManager.isInteracting == false)
                     {
-                        animatorHandler.PlayTargetAnimation("Falling", true);
+                        playerAnimatorManager.PlayTargetAnimation("Falling", true);
                     }
 
                     Vector3 vel = rigidbody.velocity;
@@ -345,7 +344,7 @@ namespace TT
                 return;
 
             //Check if we have stamina, if we do not , return
-            if (playerStats.currentStamina <= 0)
+            if (playerStatsManager.currentStamina <= 0)
                 return;
 
             //ADD COLLIDER MOVING UP?
@@ -355,7 +354,7 @@ namespace TT
                 {
                     moveDirection = cameraObject.forward * inputHandler.vertical;
                     moveDirection += cameraObject.right * inputHandler.horizontal;
-                    animatorHandler.PlayTargetAnimation("Jump", true);
+                    playerAnimatorManager.PlayTargetAnimation("Jump", true);
                     moveDirection.y = 0;
                     Quaternion jumpRotaion = Quaternion.LookRotation(moveDirection);
                     myTransform.rotation = jumpRotaion;

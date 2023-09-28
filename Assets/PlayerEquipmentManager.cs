@@ -7,8 +7,8 @@ namespace TT
     public class PlayerEquipmentManager : MonoBehaviour
     {
         InputHandler inputHandler;
-        PlayerInventory playerInventory;
-        PlayerStats playerStats;
+        PlayerInventoryManager playerInventoryManager;
+        PlayerStatsManager playerStatsManager;
 
         [Header("Skin Equipment Model Changers")]
         SkinModelChanger skinModelChanger;
@@ -20,9 +20,9 @@ namespace TT
 
         private void Awake()
         {
-            inputHandler = GetComponentInParent<InputHandler>();    
-            playerInventory = GetComponentInParent<PlayerInventory>();
-            playerStats = GetComponentInParent<PlayerStats>();
+            inputHandler = GetComponent<InputHandler>();    
+            playerInventoryManager = GetComponent<PlayerInventoryManager>();
+            playerStatsManager = GetComponent<PlayerStatsManager>();
 
             skinModelChanger = GetComponentInChildren<SkinModelChanger>();
 
@@ -40,13 +40,13 @@ namespace TT
             //unequips all skin models
             skinModelChanger.UnEquipAllSkinModels();
 
-            if(playerInventory.currentSkinEquipment != null)
+            if(playerInventoryManager.currentSkinEquipment != null)
             {
                 //equips only current skin 
-                skinModelChanger.EquipSkinModelByName(playerInventory.currentSkinEquipment.skinModelName);
+                skinModelChanger.EquipSkinModelByName(playerInventoryManager.currentSkinEquipment.skinModelName);
 
                 //get dmg absorption from playerstats
-                playerStats.physicalDamageAbsorption = playerInventory.currentSkinEquipment.physicalDefense;
+                playerStatsManager.physicalDamageAbsorption = playerInventoryManager.currentSkinEquipment.physicalDefense;
             }
             else
             {
@@ -54,7 +54,7 @@ namespace TT
                 skinModelChanger.EquipSkinModelByName(nakedSkinModel);
 
                 //set dmg absorption to 0 if naked
-                playerStats.physicalDamageAbsorption = 0;
+                playerStatsManager.physicalDamageAbsorption = 0;
 
             }
 
@@ -66,11 +66,11 @@ namespace TT
             //if player is two handing the right weapon, that weapon becomes "shield" when blocking
             if (inputHandler.twoHandFlag)
             {
-                blockingCollider.SetColliderDamageAbsoption(playerInventory.rightWeapon);
+                blockingCollider.SetColliderDamageAbsoption(playerInventoryManager.rightWeapon);
             }
             else
             {
-                blockingCollider.SetColliderDamageAbsoption(playerInventory.leftWeapon);
+                blockingCollider.SetColliderDamageAbsoption(playerInventoryManager.leftWeapon);
             }
            
             blockingCollider.EnableBlockingCollider();
