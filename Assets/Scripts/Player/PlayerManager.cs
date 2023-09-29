@@ -18,17 +18,7 @@ namespace TT
         public GameObject interactableUIGameObject;
         public GameObject itemInteractableObject;
 
-        public bool isInteracting;
 
-        [Header("Player Flags")]
-        public bool isSprinting;
-        public bool isInAir;
-        public bool isGrounded;
-        public bool canDoCombo;
-        public bool isUsingRightHand;
-        public bool isUsingLeftHand;
-        public bool isInvulnerable;
-       
 
         private void Awake()
         {

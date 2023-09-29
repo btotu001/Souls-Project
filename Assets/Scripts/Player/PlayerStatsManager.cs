@@ -63,17 +63,10 @@ namespace TT
             return maxFocusPoints;
         }
 
-        public void TakeDamageNoAnimation(int damage)
+        public override void TakeDamageNoAnimation(int damage)
         {
-            currentHealth = currentHealth - damage;
-
+            base.TakeDamageNoAnimation(damage);
             healthBar.SetCurrentHealth(currentHealth);
-
-            if (currentHealth <= 0)
-            {
-                currentHealth = 0;
-                isDead = true;
-            }
         }
 
         //Animation played when taking damage is "Damage_1" by default, others can be given in function call (if needed)

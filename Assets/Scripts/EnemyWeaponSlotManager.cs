@@ -4,18 +4,25 @@ using UnityEngine;
 
 namespace TT
 {
-    public class EnemyWeaponSlotManager : MonoBehaviour
+    public class EnemyWeaponSlotManager : CharacterWeaponSlotManager
     {
         public WeaponItem rightHandWeapon;
         public WeaponItem leftHandWeapon;
 
-        WeaponHolderSlot rightHandSlot;
-        WeaponHolderSlot leftHandSlot;
-
-        DamageCollider leftHandDamageCollider;
-        DamageCollider rightHandDamageCollider;
+        EnemyStatsManager enemyStatsManager;
 
         private void Awake()
+        {
+            enemyStatsManager = GetComponent<EnemyStatsManager>();
+            LoadWeaponHolderSlots();
+        }
+
+        private void Start()
+        {
+          LoadWeaponsOnBothHands();
+        }
+
+        private void LoadWeaponHolderSlots()
         {
             WeaponHolderSlot[] weaponHolderSlots = GetComponentsInChildren<WeaponHolderSlot>();
             foreach (WeaponHolderSlot weaponSlot in weaponHolderSlots)
@@ -28,13 +35,8 @@ namespace TT
                 {
                     rightHandSlot = weaponSlot;
                 }
-               
-            }
-        }
 
-        private void Start()
-        {
-          LoadWeaponsOnBothHands();
+            }
         }
 
         public void LoadWeaponOnSlot(WeaponItem weapon, bool isLeft)

@@ -74,8 +74,6 @@ namespace TT
             cameraObject = Camera.main.transform;
             myTransform = transform;
 
-            playerAnimatorManager.Initialize();
-
             playerManager.isGrounded = true;
             //layers that are ignored for groundchechikng
             ignoreForGroundCheck = ~(1 << 8 | 1 << 11);

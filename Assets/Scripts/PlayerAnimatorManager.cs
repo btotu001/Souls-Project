@@ -9,21 +9,17 @@ namespace TT
     public class PlayerAnimatorManager : AnimatorManager
     {
         InputHandler inputHandler;
-        PlayerManager playerManager;
-        PlayerStatsManager playerStatsManager;
-       
         PlayerLocomotionManager playerLocomotionManager;
+
         int vertical;
         int horizontal;
         
 
-        //initializing the parameters
-        public void Initialize()
+        protected override void Awake()
         {
+            base.Awake();
             inputHandler = GetComponentInParent<InputHandler>();
             animator = GetComponentInChildren<Animator>();
-            playerManager = GetComponentInParent<PlayerManager>();
-            playerStatsManager = GetComponentInParent<PlayerStatsManager>();
             playerLocomotionManager = GetComponentInParent<PlayerLocomotionManager>();
             vertical = Animator.StringToHash("Vertical");
             horizontal = Animator.StringToHash("Horizontal");
@@ -92,62 +88,7 @@ namespace TT
             animator.SetFloat(horizontal, h, 0.1f, Time.deltaTime);
         }
 
-     
 
-        public void CanRotate()
-        {
-            animator.SetBool("canRotate", true);
-        }
-
-        public void StopRotation()
-        {
-            animator.SetBool("canRotate", false);
-        }
-
-        public void EnableCombo()
-        {
-            animator.SetBool("canDoCombo", true);
-        }
-        public void DisableCombo()
-        {
-            animator.SetBool("canDoCombo", false);
-        }
-
-        public void EnableIsInvulnerable()
-        {
-            animator.SetBool("isInvulnerable", true);
-        }
-
-        public void DisableIsVulnerable()
-        {
-            animator.SetBool("isInvulnerable", false);
-        }
-
-        public void EnableIsParrying()
-        {
-            playerManager.isParrying = true;
-        }
-
-        public void DisableIsParrying()
-        {
-            playerManager.isParrying = false;
-        }
-
-        public void EnableCanBeRiposted()
-        {
-            playerManager.canBeRiposted = true;
-        }
-
-        public void DisableCanBeRiposted()
-        {
-            playerManager.canBeRiposted = false;
-        }
-
-        public override void TakeCriticalDamageAnimationEvent()
-        {
-           playerStatsManager.TakeDamageNoAnimation(playerManager.pendingCriticalDamage);
-            playerManager.pendingCriticalDamage = 0; //reset pending dmg
-        }
 
         //disables players collisions
         public void DisableCollision()
@@ -163,7 +104,7 @@ namespace TT
 
         private void OnAnimatorMove()
         {
-            if (playerManager.isInteracting == false)
+            if (characterManager.isInteracting == false)
                 return;
 
             float delta = Time.deltaTime;

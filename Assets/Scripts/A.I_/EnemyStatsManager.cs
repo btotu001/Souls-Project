@@ -5,19 +5,17 @@ using UnityEngine;
 
 namespace TT
 {
-    public class EnemyStats : CharacterStatsManager
+    public class EnemyStatsManager : CharacterStatsManager
     {
-       
         EnemyAnimatorManager enemyAnimatorManager;
         EnemyBossManager enemyBossManager;
         public UIEnemyHealthBar enemyHealthBar;
-        public int soulsAwardedOnDeath = 50;
 
         public bool isBoss;
 
         private void Awake()
         {
-            enemyAnimatorManager = GetComponentInChildren<EnemyAnimatorManager>();
+            enemyAnimatorManager = GetComponent<EnemyAnimatorManager>();
             enemyBossManager = GetComponent<EnemyBossManager>();
             maxHealth = SetMaxHealthFromHealthLevel();
             currentHealth = maxHealth;
@@ -40,16 +38,11 @@ namespace TT
             return maxHealth;
         }
 
-        public void TakeDamageNoAnimation(int damage)
+        public override void TakeDamageNoAnimation(int damage)
         {
-            currentHealth = currentHealth - damage;
+            base.TakeDamageNoAnimation(damage);
             enemyHealthBar.SetCurrentHealth(currentHealth);
-           
-            if (currentHealth <= 0)
-            {
-                currentHealth = 0;
-                isDead = true;
-            }
+
         }
 
         //override from character stats

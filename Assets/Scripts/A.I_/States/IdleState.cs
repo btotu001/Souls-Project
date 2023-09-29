@@ -9,7 +9,7 @@ namespace TT
         public PursueTargetState pursueTargetState;
         public LayerMask detectionLayer;
 
-        public override State Tick(EnemyManager enemyManager, EnemyStats enemyStats, EnemyAnimatorManager enemyAnimatorManager)
+        public override State Tick(EnemyManager enemyManager, EnemyStatsManager enemyStats, EnemyAnimatorManager enemyAnimatorManager)
         {
             //Look for potential target
             //Switch to the pursue target state if target is found

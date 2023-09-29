@@ -10,13 +10,13 @@ namespace TT
 
         [SerializeField]
         private UIBossHealthBar bossHealthBar;
-        EnemyStats enemyStats;
+        EnemyStatsManager enemyStats;
         //Handle switching phase
         //handle switching attack patterns
 
         private void Awake()
         {
-            enemyStats = GetComponent<EnemyStats>();
+            enemyStats = GetComponent<EnemyStatsManager>();
         }
 
         private void Start()

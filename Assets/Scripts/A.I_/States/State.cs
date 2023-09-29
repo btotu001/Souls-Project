@@ -8,6 +8,6 @@ namespace TT
     {
         //inheriting classes must use all functions from abstract class?
         //abstracks cant be used. need to call it from something that derives from this
-        public abstract State Tick(EnemyManager enemyManager, EnemyStats enemyStats, EnemyAnimatorManager enemyAnimatorManager);
+        public abstract State Tick(EnemyManager enemyManager, EnemyStatsManager enemyStats, EnemyAnimatorManager enemyAnimatorManager);
     }
 }

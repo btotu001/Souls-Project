@@ -20,6 +20,8 @@ namespace TT
 
         public int soulCount = 0;
 
+        public int soulsAwardedOnDeath = 50;
+
         [Header("Armor Absorptions")]
         public float physicalDamageAbsorption;
 
@@ -50,6 +52,17 @@ namespace TT
 
             //Death logic
             if(currentHealth <= 0)
+            {
+                currentHealth = 0;
+                isDead = true;
+            }
+        }
+
+        public virtual void TakeDamageNoAnimation(int damage)
+        {
+            currentHealth = currentHealth - damage;
+
+            if (currentHealth <= 0)
             {
                 currentHealth = 0;
                 isDead = true;

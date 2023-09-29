@@ -17,7 +17,7 @@ namespace TT
         public PursueTargetState pursueTargetState;
 
         //can quick action implement this class function (needed in all states)
-        public override State Tick(EnemyManager enemyManager, EnemyStats enemyStats, EnemyAnimatorManager enemyAnimatorManager)
+        public override State Tick(EnemyManager enemyManager, EnemyStatsManager enemyStats, EnemyAnimatorManager enemyAnimatorManager)
         {
            
             if (isSleeping && enemyManager.isInteracting == false)

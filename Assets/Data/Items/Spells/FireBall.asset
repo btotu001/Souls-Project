@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7905e60f6533b849adbdd8eb4dd3ee8, type: 3}
   m_Name: FireBall
   m_EditorClassIdentifier: 
-  itemIcon: {fileID: 0}
+  itemIcon: {fileID: 21300000, guid: 41e37ede882b1274699fa14cedb81cad, type: 3}
   itemName: FireBall
   spellWarmUpFX: {fileID: 4353155202840583764, guid: 018db0336b36af6449b282967b8a1d86, type: 3}
   spellCastFX: {fileID: 6043718555471276160, guid: b25954c201e9ce34a99d97b35316025b, type: 3}

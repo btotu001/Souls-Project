@@ -10,7 +10,7 @@ namespace TT
 
         EnemyLocomotionManager enemyLocomotionManager;
         EnemyAnimatorManager enemyAnimatorManager;
-        EnemyStats enemyStats;
+        EnemyStatsManager enemyStatsmanager;
 
         public State currentState;
         public CharacterStatsManager currentTarget;
@@ -19,7 +19,6 @@ namespace TT
         public Rigidbody enemyRigidbody;
 
         public bool isPerformingAction;
-        public bool isInteracting;
       
        
         public float rotationSpeed = 15;
@@ -27,9 +26,6 @@ namespace TT
 
         // public EnemyAttackAction[] enemyAttacks;
         // public EnemyAttackAction currentAttack;
-
-        [Header("Combat Flags")]
-        public bool canDoCombo;
 
         [Header("A.I Settings")]
         public float detectionRadius = 20;
@@ -46,8 +42,8 @@ namespace TT
         private void Awake()
         {
             enemyLocomotionManager = GetComponent<EnemyLocomotionManager>();
-            enemyAnimatorManager = GetComponentInChildren<EnemyAnimatorManager>();
-            enemyStats = GetComponent<EnemyStats>();
+            enemyAnimatorManager = GetComponent<EnemyAnimatorManager>();
+            enemyStatsmanager = GetComponent<EnemyStatsManager>();
             enemyRigidbody = GetComponent<Rigidbody>();
            
             navMeshAgent = GetComponentInChildren<NavMeshAgent>();
@@ -67,7 +63,7 @@ namespace TT
             isInteracting = enemyAnimatorManager.animator.GetBool("isInteracting");
             canDoCombo = enemyAnimatorManager.animator.GetBool("canDoCombo"); //when animatorManager enables, enable here too
             canRotate = enemyAnimatorManager.animator.GetBool("canRotate");
-            enemyAnimatorManager.animator.SetBool("isDead", enemyStats.isDead);
+            enemyAnimatorManager.animator.SetBool("isDead", enemyStatsmanager.isDead);
         }
 
         //rigidbody movement better on fixed/late update
@@ -105,7 +101,7 @@ namespace TT
 
             if (currentState != null)
             {
-                State nextState = currentState.Tick(this, enemyStats, enemyAnimatorManager);
+                State nextState = currentState.Tick(this, enemyStatsmanager, enemyAnimatorManager);
 
                 if(nextState != null)
                 {

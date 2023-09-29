@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace TT
 {
-    public class PlayerWeaponSlotManager : MonoBehaviour
+    public class PlayerWeaponSlotManager : CharacterWeaponSlotManager
     {
         QuickSlotsUI quickSlotsUI;
 
@@ -18,18 +18,6 @@ namespace TT
 
         [Header("Attacking Weapon")]
         public WeaponItem attackingWeapon;
-
-        [Header("Unarmed Weapon")]
-        public WeaponItem unarmedWeapon;
-
-        [Header("Weapon Slots")]
-        public WeaponHolderSlot leftHandSlot;
-        public WeaponHolderSlot rightHandSlot;
-        WeaponHolderSlot backSlot;
-
-        [Header("Damage Colliders")]
-        public DamageCollider leftHandDamageCollider;
-        public DamageCollider rightHandDamageCollider;
 
 
         private void Awake()

@@ -21,7 +21,7 @@ namespace TT
         private void Awake()
         {
             enemyManager = GetComponent<EnemyManager>();    
-            enemyAnimatorManager = GetComponentInChildren<EnemyAnimatorManager>();    
+            enemyAnimatorManager = GetComponent<EnemyAnimatorManager>();    
           
           
         }
