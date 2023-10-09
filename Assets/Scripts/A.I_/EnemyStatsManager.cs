@@ -41,7 +41,15 @@ namespace TT
         public override void TakeDamageNoAnimation(int damage)
         {
             base.TakeDamageNoAnimation(damage);
-            enemyHealthBar.SetCurrentHealth(currentHealth);
+            if (!isBoss)
+            {
+                enemyHealthBar.SetCurrentHealth(currentHealth);
+            }
+            else if(isBoss && enemyBossManager != null)
+            {
+                enemyBossManager.UpdateBossHealthBar(currentHealth); //add maxhealth
+            }
+          
 
         }
 
@@ -65,6 +73,33 @@ namespace TT
             if (currentHealth <= 0)
             {
                 HandleDeath();
+            }
+        }
+
+
+        public override void TakePoisonDamage(int damage)
+        {
+            if (isDead)
+                return;
+
+            base.TakePoisonDamage(damage);
+
+            if (!isBoss)
+            {
+                enemyHealthBar.SetCurrentHealth(currentHealth);
+            }
+            else if (isBoss && enemyBossManager != null)
+            {
+                enemyBossManager.UpdateBossHealthBar(currentHealth); //add maxhealth
+            }
+           
+
+            if (currentHealth <= 0)
+            {
+                currentHealth = 0;
+                enemyAnimatorManager.PlayTargetAnimation("Death_1", true); //ADD POISON ANIMATION
+
+                isDead = true;
             }
         }
 

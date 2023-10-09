@@ -12,6 +12,7 @@ namespace TT
         CameraHandler cameraHandler;
         PlayerLocomotionManager playerLocomotion;
         PlayerStatsManager playerStatsManager;
+        PlayerEffectsManager playerEffectsManager;
         PlayerAnimatorManager playerAnimatorManager;
 
         InteractableUI interactableUI;
@@ -32,6 +33,7 @@ namespace TT
             animator = GetComponent<Animator>();
             playerLocomotion = GetComponent<PlayerLocomotionManager>();
             playerStatsManager = GetComponent<PlayerStatsManager>();
+            playerEffectsManager = GetComponent<PlayerEffectsManager>();
             interactableUI = FindObjectOfType<InteractableUI>();
         }
 
@@ -70,7 +72,8 @@ namespace TT
             playerLocomotion.HandleMovement(delta);
             playerLocomotion.HandleFalling(delta, playerLocomotion.moveDirection);
             playerLocomotion.HandleRotation(delta);
-        
+
+            playerEffectsManager.HandleAllBuildUpEffects();
 
         }
 

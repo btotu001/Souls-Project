@@ -11,6 +11,7 @@ namespace TT
         EnemyLocomotionManager enemyLocomotionManager;
         EnemyAnimatorManager enemyAnimatorManager;
         EnemyStatsManager enemyStatsmanager;
+        EnemyEffectsManager enemyEffectsManager;
 
         public State currentState;
         public CharacterStatsManager currentTarget;
@@ -44,6 +45,7 @@ namespace TT
             enemyLocomotionManager = GetComponent<EnemyLocomotionManager>();
             enemyAnimatorManager = GetComponent<EnemyAnimatorManager>();
             enemyStatsmanager = GetComponent<EnemyStatsManager>();
+            enemyEffectsManager = GetComponent<EnemyEffectsManager>();
             enemyRigidbody = GetComponent<Rigidbody>();
            
             navMeshAgent = GetComponentInChildren<NavMeshAgent>();
@@ -64,6 +66,11 @@ namespace TT
             canDoCombo = enemyAnimatorManager.animator.GetBool("canDoCombo"); //when animatorManager enables, enable here too
             canRotate = enemyAnimatorManager.animator.GetBool("canRotate");
             enemyAnimatorManager.animator.SetBool("isDead", enemyStatsmanager.isDead);
+        }
+
+        private void FixedUpdate()
+        {
+            enemyEffectsManager.HandleAllBuildUpEffects();
         }
 
         //rigidbody movement better on fixed/late update

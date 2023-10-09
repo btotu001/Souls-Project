@@ -90,6 +90,23 @@ namespace TT
             }
         }
 
+        public override void TakePoisonDamage(int damage)
+        {
+            if (isDead)
+                return;
+
+            base.TakePoisonDamage(damage);
+            healthBar.SetCurrentHealth(currentHealth);
+
+            if (currentHealth <= 0)
+            {
+                currentHealth = 0;
+                playerAnimatorManager.PlayTargetAnimation("Death_1", true); //ADD POISON ANIMATION
+               
+                isDead = true;
+            }
+        }
+
 
         public void DecreaseStamina(int amount)
         {
