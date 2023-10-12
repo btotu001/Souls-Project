@@ -11,7 +11,8 @@
                     "id": "dae63bf9-ad95-4a47-bde8-5386a74c6cdc",
                     "expectedControlType": "Vector2",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Camera",
@@ -19,7 +20,8 @@
                     "id": "52881002-4104-48d0-b10d-fde843b83db4",
                     "expectedControlType": "Vector2",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Lock On Target Left",
@@ -27,7 +29,8 @@
                     "id": "6b2bb801-c905-4750-bb56-2dbd9c5518d0",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Lock On Target Right",
@@ -35,7 +38,8 @@
                     "id": "79eddfe0-b745-4e0e-ab42-04cab200350a",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -194,7 +198,8 @@
                     "id": "549adaaf-0e5e-455f-b8b9-d4deef22b505",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Roll",
@@ -202,7 +207,8 @@
                     "id": "d4517f32-1282-4a89-bf0f-85aaa7f92c0e",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "ResetScene",
@@ -210,7 +216,8 @@
                     "id": "8afb6ba8-dc95-4cda-800d-0aad8d42ef84",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "RB",
@@ -218,7 +225,8 @@
                     "id": "4d6db30a-808e-44b6-b0dc-f2f8f13ddc9e",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Tap"
+                    "interactions": "Tap",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "RT",
@@ -226,7 +234,8 @@
                     "id": "41e9ee50-faa0-4969-9f79-4274cbe701bb",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "LB",
@@ -234,7 +243,8 @@
                     "id": "918f4dd7-56b9-43ce-a5d3-28f778dad6eb",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "LT",
@@ -242,15 +252,17 @@
                     "id": "3f074376-8277-4d41-aad7-6b7cc2e7ac45",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Critical Attack",
-                    "type": "Button",
+                    "type": "PassThrough",
                     "id": "07bfc2d6-3321-4a42-810d-8e473d07ef3a",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "A",
@@ -258,7 +270,8 @@
                     "id": "752283d4-448d-48ed-b67f-30591b64f777",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "X",
@@ -266,7 +279,8 @@
                     "id": "6a03b1b4-007d-4f65-879a-9ab03d73e18f",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Y",
@@ -274,7 +288,8 @@
                     "id": "eabd9655-cc84-44cc-8296-9521ae9237ff",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Jump",
@@ -282,7 +297,8 @@
                     "id": "98d4e6ff-42b8-4c94-b6e4-8262cdf4426a",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "LockOn",
@@ -290,7 +306,8 @@
                     "id": "4ea7c44b-7b06-4cb4-9d1c-767839778bf3",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -581,7 +598,8 @@
                     "id": "28db308f-49bc-407e-9005-66c58a318fea",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "D-Pad Down",
@@ -589,7 +607,8 @@
                     "id": "0211a5e6-34a4-45af-ac1d-7b31a9807195",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "D-Pad Left",
@@ -597,7 +616,8 @@
                     "id": "205364e8-0ba8-403c-9950-c95f54814421",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "D-Pad Right",
@@ -605,7 +625,8 @@
                     "id": "3d6a3ece-c1ac-4d32-b165-60f98a7a291a",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [

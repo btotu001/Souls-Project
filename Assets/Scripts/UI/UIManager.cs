@@ -21,6 +21,11 @@ namespace TT
         public bool leftHandSlot01Selected;
         public bool leftHandSlot02Selected;
 
+        [Header("Pop Ups")]
+        public GravePopUpUI gravePopUpUI;
+        //add death Ui
+        public DeathPopUpUI deathPopUpUI;
+
         [Header("Weapon Inventory")]
         public GameObject weaponInventorySlotPrefab;
         public Transform weaponInventorySlotsParent;
@@ -85,6 +90,15 @@ namespace TT
             leftHandSlot02Selected = false;
         }
 
+        public void ActivateGravePopUp()
+        {
+            gravePopUpUI.DisplayGravePopUp();
+        }
+
+        public void ActivateDeathPopUp()
+        {
+            deathPopUpUI.DisplayDeathPopUp();
+        }
 
     }
 }

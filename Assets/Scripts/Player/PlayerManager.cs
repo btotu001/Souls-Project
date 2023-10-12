@@ -13,16 +13,18 @@ namespace TT
         PlayerLocomotionManager playerLocomotion;
         PlayerStatsManager playerStatsManager;
         PlayerEffectsManager playerEffectsManager;
-        PlayerAnimatorManager playerAnimatorManager;
+        public PlayerAnimatorManager playerAnimatorManager;
+        public UIManager uIManager;
 
         InteractableUI interactableUI;
         public GameObject interactableUIGameObject;
         public GameObject itemInteractableObject;
-
-
-
+       
         private void Awake()
         {
+            SPAWN.instance.Player = this.gameObject; //for demo spawning
+            SPAWN.instance.MovePlayer();
+
             Application.targetFrameRate = 60; //Move to game manager
 
             cameraHandler = FindObjectOfType<CameraHandler>();

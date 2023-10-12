@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
+
 namespace TT
 {
     public class PlayerStatsManager : CharacterStatsManager
@@ -87,8 +88,13 @@ namespace TT
                 playerAnimatorManager.PlayTargetAnimation("Death_1", true);
                 // HANDLE PLAYER DEATH
                 isDead = true;
+
+                playerManager.uIManager.ActivateDeathPopUp(); //FOR DEMO
             }
         }
+
+       
+
 
         public override void TakePoisonDamage(int damage)
         {
@@ -104,6 +110,7 @@ namespace TT
                 playerAnimatorManager.PlayTargetAnimation("Death_1", true); //ADD POISON ANIMATION
                
                 isDead = true;
+                playerManager.uIManager.ActivateDeathPopUp(); //FOR DEMO
             }
         }
 
