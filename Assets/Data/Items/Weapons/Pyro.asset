@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22b9ef37f431d8446a0db1e12f8f02a3, type: 3}
   m_Name: Pyro
   m_EditorClassIdentifier: 
-  itemIcon: {fileID: 21300000, guid: b890852ddd7b58240bdce86113c73f7e, type: 3}
+  itemIcon: {fileID: 21300000, guid: 18f00ecab8c61814184a4462f94cfdbc, type: 3}
   itemName: FireBall
   modelPrefab: {fileID: 7022083573461430633, guid: 354b1051483270148ad4d1805715bb6b, type: 3}
   isUnarmed: 0

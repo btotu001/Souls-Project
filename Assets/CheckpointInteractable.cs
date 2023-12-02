@@ -23,7 +23,9 @@ namespace TT
 
         AudioSource audioSource;
 
-        private void Awake()
+
+        //in awake
+        void Start()
         {
             //todo saving?
             //if the bonfire has been already activated by the player, play fx when loading in
@@ -31,7 +33,7 @@ namespace TT
             {
                 fireFx.gameObject.SetActive(true);
                 fireFx.Play();
-                interactableText = "Rest";
+                interactableText = "Active";
             }
             else
             {
@@ -56,7 +58,7 @@ namespace TT
                 playerManager.playerAnimatorManager.PlayTargetAnimation("Grave", true);
                 playerManager.uIManager.ActivateGravePopUp();
                 hasBeenActivated = true;
-                interactableText = "Rest";
+                interactableText = "Active";
                 activationFx.gameObject.SetActive(true);
                 activationFx.Play();
                 fireFx.gameObject.SetActive(true);
@@ -64,6 +66,14 @@ namespace TT
                 //play audio
                 //audioSource.PlayOneShot();
                 SPAWN.instance.cpActivated = true; //for demo spawn
+
+                PlayerInventoryManager playerInventoryManager;
+                playerInventoryManager = FindObjectOfType<PlayerInventoryManager>();
+                playerInventoryManager.currentConsumable.currentItemAmount = playerInventoryManager.currentConsumable.maxItemAmount;
+                UIManager uimanager;
+                uimanager = FindObjectOfType<UIManager>();
+                uimanager.flask_text.text = playerInventoryManager.currentConsumable.currentItemAmount.ToString();
+
             }
         }
     }

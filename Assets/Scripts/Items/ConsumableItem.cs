@@ -23,6 +23,7 @@ namespace TT
             if(currentItemAmount > 0)
             {
                 playerAnimatorManager.PlayTargetAnimation(consumeAnimation, isInteracting, true);
+               
             }
             else
             {

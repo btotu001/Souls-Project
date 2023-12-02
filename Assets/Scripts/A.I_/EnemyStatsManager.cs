@@ -12,6 +12,9 @@ namespace TT
         public UIEnemyHealthBar enemyHealthBar;
 
         public bool isBoss;
+        public GameObject deathfx;
+        //for demo
+        InputHandler inputhandler;
 
         private void Awake()
         {
@@ -28,7 +31,7 @@ namespace TT
             {
                 enemyHealthBar.SetMaxHealth(maxHealth);
             }
-          
+            inputhandler = FindAnyObjectByType<InputHandler>();
 
         }
 
@@ -109,8 +112,20 @@ namespace TT
             enemyAnimatorManager.PlayTargetAnimation("Death_1", true);
             // HANDLE enemy DEATH
             isDead = true;
-
+            StartCoroutine("deathFx");
             
+        }
+
+        //demo
+        IEnumerator deathFx()
+        {
+            yield return new WaitForSeconds(4f);
+            Instantiate(deathfx, transform.position, transform.rotation);
+            yield return new WaitForSeconds(1f);
+            inputhandler.lockOnInput = false;
+            inputhandler.lockOnFlag = false;
+            inputhandler.cameraHandler.ClearLockOnTargets();
+            Destroy(this.gameObject);
         }
     }
 

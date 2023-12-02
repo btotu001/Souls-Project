@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 namespace TT
 {
@@ -14,8 +15,11 @@ namespace TT
 
         public GameObject Player;
         public bool cpActivated = false;
+   
+        public bool hasKey = false;
 
         private bool created;
+
 
         private void Awake()
         {
@@ -39,16 +43,25 @@ namespace TT
            
         }
 
+
+        private void Update()
+        {
+           
+        }
+
+
         public void MovePlayer()
         {
             if (cpActivated == false)
             {
-                Player.gameObject.transform.position = new Vector3(12f, 1.2f, -22.5f);
+                //Player.gameObject.transform.position = new Vector3(12f, 1.2f, -22.5f);
             }
             else
             {
                 Player.gameObject.transform.position = new Vector3(12f, 1.2f, -18.5f);
             }
+
+          
         }
     }
 }

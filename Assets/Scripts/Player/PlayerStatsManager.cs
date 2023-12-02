@@ -18,6 +18,9 @@ namespace TT
         public float staminaRegenerationAmount = 1;
         public float staminaRegenerationTimer = 0;
 
+        //for demo
+        public CapsuleCollider Pcollider;
+
         private void Awake()
         {
             playerManager = GetComponent<PlayerManager>();
@@ -77,7 +80,7 @@ namespace TT
             if (playerManager.isInvulnerable)
                 return;
             
-            base.TakeDamage(damage, damageAnimation = "Damage_1");
+            base.TakeDamage(damage, damageAnimation);
 
             healthBar.SetCurrentHealth(currentHealth);
             playerAnimatorManager.PlayTargetAnimation(damageAnimation, true);
@@ -88,7 +91,7 @@ namespace TT
                 playerAnimatorManager.PlayTargetAnimation("Death_1", true);
                 // HANDLE PLAYER DEATH
                 isDead = true;
-
+                Pcollider.enabled = false;
                 playerManager.uIManager.ActivateDeathPopUp(); //FOR DEMO
             }
         }
@@ -110,6 +113,7 @@ namespace TT
                 playerAnimatorManager.PlayTargetAnimation("Death_1", true); //ADD POISON ANIMATION
                
                 isDead = true;
+                Pcollider.enabled = false;
                 playerManager.uIManager.ActivateDeathPopUp(); //FOR DEMO
             }
         }
@@ -155,7 +159,16 @@ namespace TT
                 currentHealth = maxHealth;
             }
 
+           
             healthBar.SetCurrentHealth(currentHealth);
+
+            //add fp 
+            currentFocusPoints = currentFocusPoints + 60;
+            if (currentFocusPoints > maxFocusPoints)
+            {
+                currentFocusPoints = maxFocusPoints;
+            }
+            focusPointBar.SetCurrentFP(currentFocusPoints);
         }
 
         public void DecreaseFocusPoints(int amount)

@@ -96,6 +96,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterManager: {fileID: 0}
+  enabledOnStartup: 0
   currentWeaponDamage: 25
 --- !u!65 &6800506767102203123
 BoxCollider:
@@ -108,7 +109,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.0000002, y: 1.0000006, z: 0.8660006}
+  m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0.0000038146973, z: 0}
 --- !u!1 &7022083573461430633
 GameObject:

@@ -22,8 +22,7 @@ namespace TT
        
         private void Awake()
         {
-            SPAWN.instance.Player = this.gameObject; //for demo spawning
-            SPAWN.instance.MovePlayer();
+            
 
             Application.targetFrameRate = 60; //Move to game manager
 
@@ -39,8 +38,14 @@ namespace TT
             interactableUI = FindObjectOfType<InteractableUI>();
         }
 
-       
-       
+        private void Start()
+        {
+            SPAWN.instance.Player = this.gameObject; //for demo spawning
+            SPAWN.instance.MovePlayer();
+        }
+
+
+
         void Update()
         {
             float delta = Time.deltaTime;

@@ -54,7 +54,7 @@ namespace TT
         BlockingCollider blockingCollider;
         PlayerWeaponSlotManager weaponSlotManager;
         UIManager uiManager;
-        CameraHandler cameraHandler;
+        public CameraHandler cameraHandler;
 
         Vector2 movementInput;
         Vector2 cameraInput;
@@ -266,22 +266,24 @@ namespace TT
             {
                 inventoryFlag = !inventoryFlag;
 
-                if (inventoryFlag)
-                {
+                //delete comments if continuing the inventory pause menu
+                //if (inventoryFlag)
+                //{
                     uiManager.OpenSelectWindow();
                     uiManager.UpdateUI();
                     uiManager.hudWindow.SetActive(false);
-                }
-                else
-                {
-                    uiManager.CloseSelectWindow();
-                    uiManager.CloseAllInventoryWindows();
-                    uiManager.hudWindow.SetActive(true);
-                }
+                //}
+                //else
+                //{
+                //    uiManager.CloseSelectWindow();
+                //    uiManager.CloseAllInventoryWindows();
+                //    uiManager.hudWindow.SetActive(true);
+                //}
             }
         }
 
-        private void HandleLockOnInput()
+        //for demo, public
+        public void HandleLockOnInput()
         {
             if(lockOnInput && lockOnFlag == false)
             {

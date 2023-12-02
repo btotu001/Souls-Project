@@ -37,7 +37,7 @@ namespace TT
 
         [Header("Movement Stats")]
         [SerializeField]
-        float movementSpeed = 5;
+        public float movementSpeed = 5;
         [SerializeField]
         float walkingSpeed = 1;
         [SerializeField]
@@ -177,6 +177,7 @@ namespace TT
                 playerManager.isSprinting = true;
                 moveDirection *= speed;
                 playerStatsManager.DecreaseStamina(sprintStaminaCost);
+                playerStatsManager.staminaRegenerationTimer = 0;
             }
             else
             {

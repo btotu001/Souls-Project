@@ -56,6 +56,7 @@ namespace TT
                         if(playerStats != null)
                         {
                             playerStats.TakeDamage(Mathf.RoundToInt(physicalDamageAfterBlock), "BlockImpact");
+                            playerStats.DecreaseStamina(31);
                             Debug.Log("blocked");
                             return; //return to not proceed to damage taking below
                         }

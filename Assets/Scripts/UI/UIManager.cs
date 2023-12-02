@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 namespace TT
 {
@@ -30,6 +31,9 @@ namespace TT
         public GameObject weaponInventorySlotPrefab;
         public Transform weaponInventorySlotsParent;
         WeaponInventorySlot[] weaponInventorySlots;
+
+        public int flaskNum;
+        public TextMeshProUGUI flask_text;
 
         private void Awake()
         {

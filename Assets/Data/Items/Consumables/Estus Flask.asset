@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemIcon: {fileID: 21300000, guid: 40e0a7b094ddfc948b5de58dfa1bf7db, type: 3}
   itemName: Estus Flask
-  maxItemAmount: 5
-  currentItemAmount: 5
+  maxItemAmount: 3
+  currentItemAmount: 0
   itemModel: {fileID: 8556118551351540765, guid: 474ccd049bb53cc47ba209b873bddaa9, type: 3}
   consumeAnimation: Drink
   isInteracting: 0

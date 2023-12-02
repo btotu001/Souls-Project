@@ -71,6 +71,15 @@ namespace TT
             enviromentLayer = LayerMask.NameToLayer("Environment");
         }
 
+        //for demo pause
+        public void LookspeedReset()
+        {
+            lookSpeed = 0;
+        }
+        public void LookspeedBack()
+        {
+            lookSpeed = 250;
+        }
         public void FollowTarget(float delta)
         {
             // Vector3 targetPosition = Vector3.Lerp(myTransform.position, targetTransform.position, delta / followSpeed);

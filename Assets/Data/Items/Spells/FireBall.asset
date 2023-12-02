@@ -17,7 +17,7 @@ MonoBehaviour:
   spellWarmUpFX: {fileID: 4353155202840583764, guid: 018db0336b36af6449b282967b8a1d86, type: 3}
   spellCastFX: {fileID: 6043718555471276160, guid: b25954c201e9ce34a99d97b35316025b, type: 3}
   spellAnimation: Projectile Start
-  focusPointCost: 0
+  focusPointCost: 20
   isFaithSpell: 0
   isMagicSpell: 0
   isPyroSpell: 1
