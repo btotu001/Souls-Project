@@ -17,6 +17,9 @@ namespace TT
 
         }
 
-        
+        public void GotKey()
+        {
+            gameObject.GetComponent<Image>().enabled = true;
+        }
     }
 }

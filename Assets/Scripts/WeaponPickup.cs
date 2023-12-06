@@ -35,6 +35,10 @@ namespace TT
             playerManager.itemInteractableObject.GetComponentInChildren<TextMeshProUGUI>().text = weapon.itemName;
             playerManager.itemInteractableObject.GetComponentInChildren<RawImage>().texture = weapon.itemIcon.texture; //change image to (weapon)items icon
             playerManager.itemInteractableObject.SetActive(true);
+            //playerManager.interactableUIGameObject.SetActive(false);
+            keyIcon keyicon = FindObjectOfType<keyIcon>();
+            keyicon.GotKey();
+            SPAWN.instance.hasKey = true;
             Destroy(gameObject); //destroy the picked item
 
         }

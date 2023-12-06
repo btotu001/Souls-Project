@@ -4900,7 +4900,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.01
+  m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &308502544274380754
 MonoBehaviour:
@@ -4914,7 +4914,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2218b95538052a94e968668994636072, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 0.5
+  radius: 1.21
   interactableText: Pick Up Item
   weapon: {fileID: 11400000, guid: a308de76b32c1f244b7221ee6d142a5f, type: 2}
 --- !u!1 &5852752518270291489

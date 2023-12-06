@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22b9ef37f431d8446a0db1e12f8f02a3, type: 3}
+  m_Name: key
+  m_EditorClassIdentifier: 
+  itemIcon: {fileID: 21300000, guid: 60048455dc851184cafd64f7ad39dbb0, type: 3}
+  itemName: Key
+  modelPrefab: {fileID: 8141548632035796757, guid: 6d90a1034f029834f9cb06d856067155, type: 3}
+  isUnarmed: 0
+  baseDamage: 25
+  criticalDamageMultiplier: 4
+  physicalDamageAbsorption: 0
+  right_hand_idle: Right_Arm_Idle_1
+  left_hand_idle: Left_Arm_Idle_1
+  th_idle: TH_Idle_1
+  OH_Light_Attack_1: OH_Light_1
+  OH_Light_Attack_2: OH_Light_2
+  OH_Heavy_Attack_1: OH_Heavy_1
+  TH_Light_Attack_1: TH_Light_1
+  TH_Light_Attack_2: TH_Light_2
+  weapon_art: 
+  baseStamina: 20
+  lightAttackMultiplier: 1
+  heavyAttackMultiplier: 2
+  isMeleeWeapon: 1
+  isSpellCaster: 0
+  isFaithCaster: 0
+  isPyroCaster: 0
+  isShieldWeapon: 0
