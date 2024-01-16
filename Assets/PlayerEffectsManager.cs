@@ -37,6 +37,14 @@ namespace TT
             playerWeaponSlotManager.LoadBothWeaponsOnSlots();
 
         }
+        //for shrugging
+        public void ShrugEffect()
+        {
+            
+            Destroy(instantiatedFXModel.gameObject);
+            playerWeaponSlotManager.LoadBothWeaponsOnSlots();
+
+        }
 
         protected override void HandlePoisonBuildUp()
         {

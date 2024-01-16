@@ -55,6 +55,10 @@ namespace TT
         {
             StartCoroutine("Quit");
         }
+        public void QuitToMenu()
+        {
+            SceneManager.LoadScene("Menu");
+        }
         public void ToggleControls()
         {
             if (!controls.activeInHierarchy)

@@ -46,6 +46,8 @@ namespace TT
             leftWeapon = weaponsInLeftHandSlots[0];
             playerWeaponSlotManager.LoadWeaponOnSlot(rightWeapon, false);
             playerWeaponSlotManager.LoadWeaponOnSlot(leftWeapon, true);
+
+           currentConsumable.currentItemAmount = currentConsumable.maxItemAmount;
         }
 
         public void ChangeRightWeapon()

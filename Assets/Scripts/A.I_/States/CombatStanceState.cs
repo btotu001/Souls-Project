@@ -10,9 +10,9 @@ namespace TT
         public EnemyAttackAction[] enemyAttacks;
         public PursueTargetState pursueTargetState;
 
-        bool randomDestinationSet = false;
-        float verticalMovementValue = 0;
-        float horizontalMovementValue = 0;  
+        protected bool randomDestinationSet = false;
+        protected float verticalMovementValue = 0;
+        protected float horizontalMovementValue = 0;  
 
         public override State Tick(EnemyManager enemyManager, EnemyStatsManager enemyStats, EnemyAnimatorManager enemyAnimatorManager)
         {
@@ -58,7 +58,7 @@ namespace TT
             return this;
         }
 
-        private void HandleRotateTowardsTarget(EnemyManager enemyManager)
+        protected void HandleRotateTowardsTarget(EnemyManager enemyManager)
         {
             //Rotate manually
             if (enemyManager.isPerformingAction)
@@ -90,14 +90,14 @@ namespace TT
             }
         }
 
-        private void DecideCirclingAction(EnemyAnimatorManager enemyAnimatorManager)
+        protected void DecideCirclingAction(EnemyAnimatorManager enemyAnimatorManager)
         {
             //Circle with only forward vertical movement
             //circle with running
             WalkAroundTarget(enemyAnimatorManager);
         }
 
-        private void WalkAroundTarget(EnemyAnimatorManager enemyAnimatorManager)
+        protected void WalkAroundTarget(EnemyAnimatorManager enemyAnimatorManager)
         {
             //verticalMovementValue = Random.Range(0, 1); //only walk towards target (-1,1) - goes back and forward
             verticalMovementValue = 0.5f; //only moves forward (better)
@@ -117,7 +117,7 @@ namespace TT
         }
 
         #region Attacks
-        private void GetNewAttack(EnemyManager enemyManager)
+        protected virtual void GetNewAttack(EnemyManager enemyManager)
         {
             Vector3 targetDirection = enemyManager.currentTarget.transform.position - transform.position;
             float viewableAngle = Vector3.Angle(targetDirection, transform.forward);

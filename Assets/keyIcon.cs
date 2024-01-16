@@ -14,6 +14,10 @@ namespace TT
             {
                 gameObject.GetComponent<Image>().enabled = true;
             }
+            if (SPAWN.instance.usedKey)
+            {
+                gameObject.GetComponent<Image>().enabled = false;
+            }
 
         }
 

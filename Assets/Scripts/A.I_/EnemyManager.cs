@@ -39,6 +39,10 @@ namespace TT
         [Header("A.I Combat Settings")]
         public bool allowAIToPerformCombos;
         public float comboLikelyHood;
+        public bool isPhaseShifting;
+        public bool isBoss;
+        public State idl;
+        public State purs;
 
         private void Awake()
         {
@@ -63,7 +67,13 @@ namespace TT
 
             isRotatingWithRootMotion = enemyAnimatorManager.animator.GetBool("isRotatingWithRootMotion");
             isInteracting = enemyAnimatorManager.animator.GetBool("isInteracting");
+            if (isBoss)
+            {
+                isPhaseShifting = enemyAnimatorManager.animator.GetBool("isPhaseShifting");
+            }
+
             canDoCombo = enemyAnimatorManager.animator.GetBool("canDoCombo"); //when animatorManager enables, enable here too
+
             canRotate = enemyAnimatorManager.animator.GetBool("canRotate");
             enemyAnimatorManager.animator.SetBool("isDead", enemyStatsmanager.isDead);
         }
@@ -81,30 +91,25 @@ namespace TT
 
         }
         
+        public void ResetToPurs()
+        {
+            if (isBoss)
+            {
+                currentState = purs;
+            }
+        }
+        public void ResetToPursStab()
+        {
+            PlayerStatsManager player;
+            player = FindObjectOfType<PlayerStatsManager>();
+            currentTarget = player;
+            currentState = purs;
+            
+        }
 
         private void HandleStateMachine()
         {
-            //OLD HandleCurrentAction
-            ////call distancefromtarget before or its calculated as 0
-            //if(enemyLocomotionManager.currentTarget != null)
-            //{
-            //    enemyLocomotionManager.distanceFromTarget = Vector3.Distance(enemyLocomotionManager.currentTarget.transform.position, transform.position);
-            //}
-
-            ////if no current target, try to find potential target
-            //if(enemyLocomotionManager.currentTarget == null)
-            //{
-            //    enemyLocomotionManager.HandleDetection();
-            //}
-            //else if (enemyLocomotionManager.distanceFromTarget > enemyLocomotionManager.stoppingDistance)
-            //{
-            //    enemyLocomotionManager.HandleMoveToTarget();
-            //}
-            //else if (enemyLocomotionManager.distanceFromTarget <= enemyLocomotionManager.stoppingDistance)
-            //{
-            //    //Handle enemy attacks
-            //    AttackTarget();
-            //}
+           
 
             if (currentState != null)
             {
@@ -114,6 +119,10 @@ namespace TT
                 {
                     SwitchToNextState(nextState);
                 }
+            }
+            if(currentTarget != null && currentState == idl)
+            {
+                currentState = purs;
             }
 
         }

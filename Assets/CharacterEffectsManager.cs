@@ -42,7 +42,7 @@ namespace TT
 
             if(poisonBuildup > 0 && poisonBuildup < 100)
             {
-                poisonBuildup = poisonBuildup - 1 * Time.deltaTime;
+                poisonBuildup = poisonBuildup - 3 * Time.deltaTime;
             }
             else if (poisonBuildup >= 100)
             {

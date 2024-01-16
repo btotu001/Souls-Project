@@ -158,6 +158,7 @@ namespace TT
         public void CloseDamageCollider()
         {
            rightHandDamageCollider.DisableDamageCollider();
+           if(leftHandDamageCollider != null)
            leftHandDamageCollider.DisableDamageCollider();   
         }
 

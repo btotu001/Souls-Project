@@ -314,6 +314,7 @@ namespace TT
                     playernAimatorHandler.PlayTargetAnimation("RiposteStab", true);
                     Debug.Log("RIPOSTED");
                     enemyCharacterManager.GetComponentInChildren<AnimatorManager>().PlayTargetAnimation("RiposteStabbed", true);
+
                 }
 
                 

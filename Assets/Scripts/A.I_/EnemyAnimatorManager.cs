@@ -7,6 +7,7 @@ namespace TT
     public class EnemyAnimatorManager : AnimatorManager
     {
         EnemyManager enemyManager;
+        EnemyBossManager enemyBossManager;
 
 
         protected override void Awake()
@@ -15,6 +16,7 @@ namespace TT
             //anim derived from animatorManager
             animator = GetComponent<Animator>();
             enemyManager = GetComponent<EnemyManager>();
+            enemyBossManager = GetComponentInParent<EnemyBossManager>();
         }
 
         public void AwardSoulsOnDeath()
@@ -34,6 +36,11 @@ namespace TT
                 }
             }
           
+        }
+
+        public void InstantiateBossParticleFx()
+        {
+            enemyBossManager.particleFX.SetActive(true);
         }
 
         //every time our animator plays animation with root motion, it recenters our model back on the gameobject

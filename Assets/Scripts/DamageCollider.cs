@@ -9,9 +9,11 @@ namespace TT
     {
         public CharacterManager characterManager;
         Collider damageCollider;
+        public Collider damageCollider2;
         public bool enabledOnStartup = false; //for colliders that does not open in animations (ie. fireball)
 
         public int currentWeaponDamage = 25;
+        private InputHandler iha;
 
         private void Awake()
         {
@@ -19,17 +21,35 @@ namespace TT
             damageCollider.gameObject.SetActive(true);
             damageCollider.isTrigger = true;
             damageCollider.enabled = enabledOnStartup;
+
+            if(damageCollider2 != null)
+            {
+                damageCollider2.gameObject.SetActive(true);
+                damageCollider2.isTrigger = true;
+                damageCollider2.enabled = enabledOnStartup;
+            }
  
         }
-
+        private void Start()
+        {
+            iha = FindObjectOfType<InputHandler>();
+        }
         public void EnableDamageCollider()
         {
             damageCollider.enabled = true;
+            if (damageCollider2 != null)
+            {
+                damageCollider2.enabled = true;
+            }
         }
 
         public void DisableDamageCollider()
         {
             damageCollider.enabled = false;
+            if (damageCollider2 != null)
+            {
+                damageCollider2.enabled = false;
+            }
         }
 
         private void OnTriggerEnter(Collider collision)
@@ -97,9 +117,27 @@ namespace TT
                     }
                 }
 
-                if (enemyStats != null)
+                if (enemyStats != null && !enemyStats.isDead)
                 {
-                    enemyStats.TakeDamage(currentWeaponDamage);
+                    if (enemyStats.isBoss && (enemyStats.currentHealth < (enemyStats.maxHealth / 2) + 30 && enemyStats.currentHealth > (enemyStats.maxHealth / 2) - 30))
+                    {
+                        Debug.Log("VÄLI");
+                        enemyStats.TakeDamageNoAnimation(currentWeaponDamage);
+
+                    }
+                    else
+                    {
+                        if (iha.twoHandFlag)
+                        {
+                            currentWeaponDamage += 5;
+                        }
+                        enemyStats.TakeDamage(currentWeaponDamage);
+                        if (iha.twoHandFlag)
+                        {
+                            currentWeaponDamage -= 5;
+                        }
+                    }
+                 
                 }
             }
 

@@ -17,6 +17,7 @@ namespace TT
         public bool cpActivated = false;
    
         public bool hasKey = false;
+        public bool usedKey = false;
 
         private bool created;
 
@@ -41,6 +42,7 @@ namespace TT
 
             MovePlayer();
            
+           
         }
 
 
@@ -58,7 +60,7 @@ namespace TT
             }
             else
             {
-                Player.gameObject.transform.position = new Vector3(12f, 1.2f, -18.5f);
+                Player.gameObject.transform.position = new Vector3(60.2f, 1.2f, -23.9f);
             }
 
           

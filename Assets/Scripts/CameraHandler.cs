@@ -68,7 +68,7 @@ namespace TT
         private void Start()
         {
             //DELETE? EP:42 17:40
-            enviromentLayer = LayerMask.NameToLayer("Environment");
+            //enviromentLayer = LayerMask.NameToLayer("Environment");
         }
 
         //for demo pause
@@ -191,6 +191,7 @@ namespace TT
 
                             if(hit.transform.gameObject.layer == enviromentLayer)
                             {
+                                Debug.Log("Wall Detected");
                                 //cannot lock onto target, object in the way
                             }
                             else
